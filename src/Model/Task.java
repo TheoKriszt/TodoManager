@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,7 +8,7 @@ import java.util.Comparator;
 /**
  * Created by achaillot on 05/12/16.
  */
-public abstract class Task {
+public abstract class Task implements Serializable {
 
     protected String name = "";
     protected String contenu = "";
