@@ -13,6 +13,11 @@ public class Category {
     private static ArrayList<Category> categories = new ArrayList<Category>(Collections.singletonList(new Category("Aucune")));
 
     public Category(String name){
+
+        if (name.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
         this.name = name;
         this.tasks = new ArrayList<Task>();
         this.categories.add(this);
@@ -83,5 +88,9 @@ public class Category {
 
     public ArrayList<Task> getTasks() {
         return tasks;
+    }
+
+    public String getName() {
+        return name;
     }
 }

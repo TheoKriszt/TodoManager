@@ -17,6 +17,9 @@ public abstract class Task {
 
 
     public Task(String name){
+        if (name.isEmpty()){
+            throw new IllegalArgumentException();
+        }
         this.name = name;
         Category c = Category.categoryAucune();
         c.addTask(this);
