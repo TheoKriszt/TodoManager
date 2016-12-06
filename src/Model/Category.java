@@ -1,12 +1,13 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
  * Created by achaillot on 05/12/16.
  */
-public class Category {
+public class Category implements Serializable {
 
     private String name ="";
     private ArrayList<Task> tasks;
