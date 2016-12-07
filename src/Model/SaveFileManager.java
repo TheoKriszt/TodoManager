@@ -33,11 +33,17 @@ public class SaveFileManager  {
     }
 
     public void readFromFile() throws IOException, ClassNotFoundException {
-        FileInputStream fint = new FileInputStream("SaveFile.ser");
-        if(fint == null){
+        FileInputStream fint = null;
+        try {
+            fint = new FileInputStream("SaveFile.ser");
+        }catch (FileNotFoundException e){
+
             readWhenFileDoesntExist();
+
+        }finally {
             fint = new FileInputStream("SaveFile.ser");
         }
+
         ois = new ObjectInputStream(fint);
         Category.setCategories(readCategories(ois));
         if(ois != null){
@@ -45,14 +51,23 @@ public class SaveFileManager  {
         }
     }
 
-    // crée un fichier sérialisé avec les deux catégories par défault. Est appelé uniquement si le fichier sérialisé n'exite pas déjà.
+    // crée un fichier sérialisé avec les deux catégories par défault. Est appelé uniquement si le fichier sérialisé n'existe pas déjà.
     public void readWhenFileDoesntExist() throws IOException {
         FileOutputStream fout = new FileOutputStream("SaveFile.ser");
         oos = new ObjectOutputStream(fout);
+        Category aucune = new Category("Aucune");
         Category perso = new Category("Personnelle");
         Category travail = new Category("Travail");
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(aucune);
+        categories.add(perso);
+        categories.add(travail);
+        //oos.writeObject(categories);
+        Category.setCategories(categories);
+        saveToFile();
+        /*oos.writeObject(aucune);
         oos.writeObject(perso);
-        oos.writeObject(travail);
+        oos.writeObject(travail);*/
         if(oos != null){
             oos.flush();
             oos.close();

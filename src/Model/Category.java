@@ -11,9 +11,10 @@ public class Category implements Serializable {
 
     private String name ="";
     private ArrayList<Task> tasks;
-    private static ArrayList<Category> categories = new ArrayList<Category>(Collections.singletonList(new Category("Aucune")));
+    private static ArrayList<Category> categories = new ArrayList<Category>();
 
-    public Category(String name){
+
+    public Category(String name) throws IllegalArgumentException{
 
         if (name.isEmpty()){
             throw new IllegalArgumentException();
@@ -55,8 +56,12 @@ public class Category implements Serializable {
         this.name = newName;
     }
 
+    /**
+     *
+     */
     public void removeCategory(){
-        for (Task t : tasks){
+        //Iteration sur un clone sinon rencontre des problèmes de modifications concurrentes sur l'ArrayList
+        for (Task t : (ArrayList<Task>)tasks.clone()){
             removeTaskFromCategory(t);
         }
         categories.remove(this);
@@ -93,5 +98,9 @@ public class Category implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String toString(){
+        return  name;
     }
 }

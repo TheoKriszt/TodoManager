@@ -35,7 +35,10 @@ public abstract class Task implements Serializable {
         this.contenu = contenu;
     }
 
-    public void setEcheance(LocalDate ld){
+    public void setEcheance(LocalDate ld) throws IllegalArgumentException{
+        if (!ld.isAfter(LocalDate.now())){
+            throw new IllegalArgumentException("Une tâche ne peut être repoussée que dans le futur");
+        }
         echeance = ld;
     }
 
@@ -60,6 +63,7 @@ public abstract class Task implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
+        if (!(o.getClass() == this.getClass())) return false;
 
         Task task = (Task) o;
 
@@ -80,8 +84,8 @@ public abstract class Task implements Serializable {
         tasks.sort(new Comparator<Task>() {
             @Override
             public int compare(Task o1, Task o2) {
-                if (o1.echeance.equals(o2.echeance)) return 0; // Todo : tester egalité sur dates
-                return (o1.echeance.isBefore(o2.echeance)) ? 1 : -1; // Todo : inverser si mauvais ordre
+                if (o1.echeance.equals(o2.echeance)) return 0;
+                return (o1.echeance.isBefore(o2.echeance)) ? -1 : 1;
             }
         });
     }
@@ -100,5 +104,13 @@ public abstract class Task implements Serializable {
 
     public boolean releasedLate(){
             return doneDate.isAfter(echeance);
+    }
+
+    public String getContenu() {
+        return contenu;
+    }
+
+    public String toString(){
+        return "["+echeance+"] : " + name;
     }
 }
