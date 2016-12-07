@@ -1,7 +1,9 @@
 import Model.Category;
 import Model.SaveFileManager;
 import Model.TodoManager;
+import View.TestFrame;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,6 +26,8 @@ public class Main {
         cats.add(perso);
         cats.add(travail);
         Category.setCategories(cats);
+
+        JFrame jf = new TestFrame();
 
 
 
