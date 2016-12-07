@@ -1,6 +1,6 @@
 package View;
 
-import Model.Bilan;
+
 
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
@@ -8,9 +8,10 @@ import javax.swing.text.DefaultFormatterFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Created by Antho on 07/12/2016.
@@ -22,9 +23,9 @@ public class BilanPanel extends JPanel {
 
 
     public BilanPanel(){
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         DateFormatter dateFormatter=new DateFormatter(sdf);
         DefaultFormatterFactory dateFormatterFactory =new DefaultFormatterFactory(dateFormatter,new DateFormatter(),dateFormatter);
 
@@ -46,23 +47,30 @@ public class BilanPanel extends JPanel {
         JButton bilan = new JButton("Afficher le bilan");
         bilan.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                try {
-                    LocalDate db = sdf.parse(dateDebut.getText());
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
-                JPanel containtBilan = new ContaintBilanPanel()
+                    /*Date d = sdf.parse(dateDebut.getText());
+                    LocalDate ldb = LocalDate.from(Instant.ofEpochMilli(d.getTime()));
+                    d = sdf.parse(dateFin.getText());
+                    LocalDate ldf = LocalDate.from(Instant.ofEpochMilli(d.getTime()));*/
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+                dtf.withLocale(Locale.FRANCE);
+                LocalDate ldb = LocalDate.parse(dateDebut.getText(),dtf);
+                LocalDate ldf = LocalDate.parse(dateFin.getText(),dtf);
+                JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
+                centerPan.add(containtBilan);
+
             }
         });
         JPanel jpButton = new JPanel();
         jpButton.add(bilan);
 
-        northPanel.add(periode);
-        JPanel jp = new JPanel(new BorderLayout(50,0));
+        northPanel.add(periode,BorderLayout.NORTH);
+        JPanel jp = new JPanel(new GridLayout(1,3,50,0));
         jp.add(jpDebut);
         jp.add(jpFin);
         jp.add(jpButton);
-        northPanel.add(jp);
+        northPanel.add(jp,BorderLayout.CENTER);
+        this.add(northPanel,BorderLayout.NORTH);
+        this.add(centerPan, BorderLayout.CENTER);
 
     }
 }
