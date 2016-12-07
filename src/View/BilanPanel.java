@@ -51,10 +51,11 @@ public class BilanPanel extends JPanel {
                     LocalDate ldb = LocalDate.from(Instant.ofEpochMilli(d.getTime()));
                     d = sdf.parse(dateFin.getText());
                     LocalDate ldf = LocalDate.from(Instant.ofEpochMilli(d.getTime()));*/
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM yyyy");
                 dtf.withLocale(Locale.FRANCE);
                 LocalDate ldb = LocalDate.parse(dateDebut.getText(),dtf);
                 LocalDate ldf = LocalDate.parse(dateFin.getText(),dtf);
+
                 JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
                 centerPan.add(containtBilan);
 

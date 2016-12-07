@@ -17,6 +17,7 @@ public class ContaintBilanPanel extends JPanel {
     private LocalDate dateFin;
 
     public ContaintBilanPanel(LocalDate db, LocalDate df){
+
         this.dateDebut = db;
         this.dateFin = df;
     }
