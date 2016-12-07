@@ -25,20 +25,22 @@ public class BilanPanel extends JPanel {
     public BilanPanel(){
         this.setLayout(new BorderLayout());
 
+        /* fonctionne avec JFormattedTextField mais problème avec le parse
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         DateFormatter dateFormatter=new DateFormatter(sdf);
         DefaultFormatterFactory dateFormatterFactory =new DefaultFormatterFactory(dateFormatter,new DateFormatter(),dateFormatter);
+        */
 
         JLabel periode = new JLabel("Saisir la période pour l'édition du bilan");
 
         JLabel db = new JLabel("Début de la période :");
-        JFormattedTextField dateDebut = new JFormattedTextField(dateFormatterFactory);
+        JTextField dateDebut = new JTextField();
         JPanel jpDebut = new JPanel(new BorderLayout());
         jpDebut.add(db, BorderLayout.NORTH);
         jpDebut.add(dateDebut, BorderLayout.SOUTH);
 
         JLabel df = new JLabel("Fin de la période :");
-        JFormattedTextField dateFin = new JFormattedTextField(dateFormatterFactory);
+        JTextField dateFin = new JTextField();
         JPanel jpFin = new JPanel(new BorderLayout());
         jpFin.add(df,BorderLayout.NORTH);
         jpFin.add(dateFin,BorderLayout.SOUTH);
@@ -51,7 +53,7 @@ public class BilanPanel extends JPanel {
                     LocalDate ldb = LocalDate.from(Instant.ofEpochMilli(d.getTime()));
                     d = sdf.parse(dateFin.getText());
                     LocalDate ldf = LocalDate.from(Instant.ofEpochMilli(d.getTime()));*/
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM yyyy");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
                 dtf.withLocale(Locale.FRANCE);
                 LocalDate ldb = LocalDate.parse(dateDebut.getText(),dtf);
                 LocalDate ldf = LocalDate.parse(dateFin.getText(),dtf);

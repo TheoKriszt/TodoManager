@@ -20,6 +20,8 @@ public class ContaintBilanPanel extends JPanel {
 
         this.dateDebut = db;
         this.dateFin = df;
+
+        System.out.println("lalala");
     }
 
     public void paintComponent(Graphics g){
@@ -41,6 +43,10 @@ public class ContaintBilanPanel extends JPanel {
 
         g.drawString("Tâches réalisé dans les temps : ", this.getWidth()/2 + 10, 3*this.getHeight()/4);
         g.drawString(Float.toString(bilan.getTasksReleasedInTime()) + "%", this.getWidth()/2 + 50, 3*this.getHeight()/4);
+
+        paint(g);
+
+        System.out.println("lalala");
     }
 
 }
