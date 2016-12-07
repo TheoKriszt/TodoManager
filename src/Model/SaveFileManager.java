@@ -30,6 +30,7 @@ public class SaveFileManager  {
 
     public void setTodoManager(TodoManager todoManager) {
         this.todoManager = todoManager;
+        todoManager.setSaveFileManager(this);
     }
 
     public void readFromFile() throws IOException, ClassNotFoundException {

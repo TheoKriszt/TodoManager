@@ -1,6 +1,5 @@
-import Model.Category;
-import Model.SaveFileManager;
-import Model.TodoManager;
+import Model.*;
+import View.MainFrame;
 import View.TestFrame;
 
 import javax.swing.*;
@@ -17,22 +16,19 @@ public class Main {
 
         sfm.readFromFile();
 
-        //Fausse init
-        Category none = new Category("Aucune");
-        Category perso = new Category("Personnel");
-        Category travail = new Category("Travail");
-        ArrayList<Category> cats = new ArrayList<>();
-        cats.add(none);
-        cats.add(perso);
-        cats.add(travail);
-        Category.setCategories(cats);
+        Task t1 = new SimpleTask("Tache 1"),
+                t2 = new SimpleTask("Tache 2"),
+                t3 = new SimpleTask("Tache 3");
 
-        JFrame jf = new TestFrame();
+        /**
+         * TODO :
+         * Ajouter listeners sur les TaskView
+         * Quand cliqué, ouvre une popup de Lecture/Modif/Suppression
+         *
+         */
 
-
-
-
-        //Todo : afficher le TodoManager
+        //JFrame jf = new TestFrame();
+        MainFrame mainFrame = new MainFrame(tm);
 
     }
 }

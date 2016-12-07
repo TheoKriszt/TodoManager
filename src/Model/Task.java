@@ -10,6 +10,26 @@ import java.util.Comparator;
  */
 public abstract class Task implements Serializable {
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getEcheance() {
+        return echeance;
+    }
+
+    public LocalDate getDoneDate() {
+        return doneDate;
+    }
+
+    public void setDoneDate(LocalDate doneDate) {
+        this.doneDate = doneDate;
+    }
+
     protected String name = "";
     protected String contenu = "";
     protected LocalDate echeance = LocalDate.now();
@@ -112,5 +132,19 @@ public abstract class Task implements Serializable {
 
     public String toString(){
         return "["+echeance+"] : " + name;
+    }
+
+    /**
+     *
+     * @return toutes les tâches existantes
+     */
+    public static ArrayList<Task> allTasks(){
+        ArrayList<Task> tasks = new ArrayList<>();
+        for (Category category : Category.getCategories()){
+            for (Task t : category.getTasks()){
+                tasks.add(t);
+            }
+        }
+        return tasks;
     }
 }
