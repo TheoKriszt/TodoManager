@@ -25,7 +25,7 @@ public class CategoryTest{
         cats.add(travail);
         Category.setCategories(cats);
 
-        t = new SimpleTask("move me", Category.getAucune());
+        t = new Task("move me", Category.getAucune());
         base = new Category("Base");
 
     }
@@ -48,7 +48,7 @@ public class CategoryTest{
     public void testAddTask() throws Exception {
         Integer oldCount = base.getTasks().size();
         oldCount++;
-        base.addTask(new SimpleTask("test"));
+        base.addTask(new Task("test"));
         Integer newCount = base.getTasks().size();
         assertEquals(oldCount, newCount);
 

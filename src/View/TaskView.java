@@ -13,9 +13,9 @@ import java.util.Observer;
  */
 public class TaskView extends JPanel implements Observer{
 
-    private TaskController taskController;
-    private JLabel nameLabel, endDateLabel, progressLabel;
-    private JButton removeButton, editButton, moveButton;
+    protected TaskController taskController;
+    protected JLabel nameLabel, endDateLabel, progressLabel;
+    protected JButton removeButton, editButton, moveButton;
 
     public JLabel getNameLabel() {
         return nameLabel;
@@ -30,10 +30,23 @@ public class TaskView extends JPanel implements Observer{
     }
 
 
+    public JButton getRemoveButton() {
+        return removeButton;
+    }
+
+    public JButton getEditButton() {
+        return editButton;
+    }
+
+    public JButton getMoveButton() {
+        return moveButton;
+    }
 
     public TaskView(TaskController tc){
         super(new BorderLayout(5, 5));
+
         taskController = tc;
+        taskController.setListeners(this);
 
         setBorder(BorderFactory.createLineBorder(Color.black));
 
@@ -41,9 +54,9 @@ public class TaskView extends JPanel implements Observer{
         endDateLabel = new JLabel("", JLabel.RIGHT);
         progressLabel = new JLabel("%", JLabel.CENTER);
 
-        editButton = new JButton("Modifier");
-        removeButton = new JButton("Supprimer");
-        moveButton = new JButton("Déplacer");
+        editButton = new JButton("Mod");
+        removeButton = new JButton("Sup");
+        moveButton = new JButton("Dép");
 
         add(nameLabel, BorderLayout.NORTH);
         add(endDateLabel, BorderLayout.EAST);

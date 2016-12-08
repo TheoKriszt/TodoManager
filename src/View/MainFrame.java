@@ -1,7 +1,5 @@
 package View;
 
-import Model.SimpleTask;
-import Model.Task;
 import Model.TodoManager;
 
 import javax.swing.*;

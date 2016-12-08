@@ -2,6 +2,7 @@ package Model;
 
 import View.TaskView;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +14,17 @@ import java.util.Observable;
  */
 public class Task extends Observable implements Serializable {
 
+    protected String name = "";
+    protected String contenu = "";
+    protected LocalDate echeance = LocalDate.now();
+    protected LocalDate doneDate = null;
+    protected int progress = 0;
     protected TaskView view;
+
+    public Task(String name){
+        Category c = Category.getAucune();
+        c.addTask(this);
+    }
 
 
 
@@ -27,29 +38,6 @@ public class Task extends Observable implements Serializable {
 
     public void setDoneDate(LocalDate doneDate) {
         this.doneDate = doneDate;
-    }
-
-    protected String name = "";
-    protected String contenu = "";
-    protected LocalDate echeance = LocalDate.now();
-    protected LocalDate doneDate = null;
-    protected int progress = 0;
-
-
-    public Task(TaskView v){
-        view = v;
-        addObserver(view);
-    }
-
-    /**
-     * Deprecated : constuire avec la taskVies
-     * Todo : remove constructor
-     * @param name
-     */
-    @Deprecated
-    public Task(String name){
-        Category c = Category.getAucune();
-        c.addTask(this);
     }
 
     public String getName() {
@@ -166,5 +154,13 @@ public class Task extends Observable implements Serializable {
             }
         }
         return tasks;
+    }
+
+    public void setView(TaskView v){
+        view = v;
+        addObserver(v);
+    }
+    public TaskView getView() {
+        return view;
     }
 }

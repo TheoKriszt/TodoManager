@@ -30,11 +30,11 @@ public class TaskTest{
         cats.add(travail);
         Category.setCategories(cats);
 
-        endsToday = new SimpleTask("today");
-        endsTomorrow = new SimpleTask("tomorrow");
-        endedYesterday = new SimpleTask("yesterday");
+        endsToday = new Task("today");
+        endsTomorrow = new Task("tomorrow");
+        endedYesterday = new Task("yesterday");
         aMonthAgo = new LongTask("A month ago");
-        inAMonth = new SimpleTask("In a month");
+        inAMonth = new Task("In a month");
 
         endsToday.setProgress(100);
 
@@ -46,7 +46,7 @@ public class TaskTest{
 
     @Test (expected=IllegalArgumentException.class)
     public void testNomNonvide(){
-        Task nomVide = new SimpleTask(""); //argument chaîne vide interdit
+        Task nomVide = new Task(""); //argument chaîne vide interdit
     }
 
     @Test
@@ -100,14 +100,14 @@ public class TaskTest{
 
     @Test
     public void testEquals() throws Exception {
-        Task a = new SimpleTask(" ");
-        Task b = new SimpleTask(" ");
+        Task a = new Task(" ");
+        Task b = new Task(" ");
         assertEquals(a, b);
     }
 
     @Test
     public void testDifferents() throws Exception {
-        Task a = new SimpleTask(" ");
+        Task a = new Task(" ");
         Task b = new LongTask(" ");
         assertNotEquals(a, b);
     }

@@ -67,7 +67,7 @@ public class SaveFileManagerTest {
     @Test
     public void testPersistenceTache() throws Exception {
         O.readFromFile();
-        Task t = new SimpleTask("Doit persister");
+        Task t = new Task("Doit persister");
         O.saveToFile();
         O.readFromFile();
 

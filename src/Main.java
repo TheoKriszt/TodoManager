@@ -1,5 +1,7 @@
+import Controller.TaskController;
 import Model.*;
 import View.MainFrame;
+import View.TaskView;
 import View.TestFrame;
 
 import javax.swing.*;
@@ -16,9 +18,24 @@ public class Main {
 
         sfm.readFromFile();
 
-        Task t1 = new SimpleTask("Tache 1"),
-                t2 = new SimpleTask("Tache 2"),
-                t3 = new SimpleTask("Tache 3");
+        //TODO : jeu de test, à supprimer avant rendu prof
+        Task t1 = new Task("Tache 1"),
+                t2 = new Task("Tache 2"),
+                t3 = new Task("Tache 3");
+
+        TaskController tc1 = new TaskController(t1),
+                tc2 = new TaskController(t2),
+                tc3 = new TaskController(t3);
+
+        TaskView tv1 = new TaskView(tc1),
+                tv2 = new TaskView(tc2),
+                tv3 = new TaskView(tc3);
+
+
+
+        t1.setView(tv1);
+        t2.setView(tv2);
+        t3.setView(tv3);
 
         /**
          * TODO :

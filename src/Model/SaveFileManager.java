@@ -9,7 +9,10 @@ import java.util.ArrayList;
  * Usage du design pattern singleton : empêche l'accès multiple au(x) fichier(s) de sauvegarde et conserve leur intégrité
  */
 
+/**
+ */
 public class SaveFileManager  {
+
 
     private static SaveFileManager O;
     private TodoManager todoManager;
