@@ -12,11 +12,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Antho on 07/12/2016.
  */
-public class BilanPanel extends JPanel {
+public class BilanPanel extends ObserverPanel {
 
     private JPanel northPanel = new JPanel(new BorderLayout(0,25));
     private JPanel centerPan = new JPanel();
@@ -54,6 +56,8 @@ public class BilanPanel extends JPanel {
                     d = sdf.parse(dateFin.getText());
                     LocalDate ldf = LocalDate.from(Instant.ofEpochMilli(d.getTime()));*/
                 centerPan.removeAll();
+                //Todo : removeAll ineffectif
+                //Todo : autoriser le d MM YYYY, voire utiliser une library de datePicker
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
                 dtf.withLocale(Locale.FRANCE);
                 LocalDate ldb = LocalDate.parse(dateDebut.getText(),dtf);
@@ -76,5 +80,11 @@ public class BilanPanel extends JPanel {
         northPanel.add(jp,BorderLayout.CENTER);
         this.add(northPanel,BorderLayout.NORTH);
         this.add(centerPan, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("BilanPanel::update()");
+
     }
 }

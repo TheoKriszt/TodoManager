@@ -60,7 +60,13 @@ public class CategoryTest{
         assertEquals(Category.getAucune(), new Category("Aucune"));
 
     }
+    //Todo : empecher suppression categorie Aucune ou son renommage
 
+    //TODO : tenter d'ajouter une catégorie déjà existante : s'attendre à un fail
+    @Test (expected = IllegalArgumentException.class)
+    public void testNonDoublon(){
+        new Category("Aucune"); //La catégorie Aucune existe de base, levera une exception pour duplicat de nom
+    }
 
     @Test
     public void testMoveTaskToCategory() throws Exception {

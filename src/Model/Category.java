@@ -1,16 +1,23 @@
 package Model;
 
+import View.CategoryView;
+import View.ObserverPanel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by achaillot on 05/12/16.
  */
-public class Category implements Serializable {
+public class Category extends Observable implements Serializable {
 
     private String name ="";
-    private ArrayList<Task> tasks;
-    private static ArrayList<Category> categories = new ArrayList<Category>();
+    private ArrayList<Task> tasks; //Une Catégorie contient une liste de tâches
+    private static ArrayList<Category> categories = new ArrayList<Category>(); //Les Catégories sont recensées dans une liste générale
+    static transient TodoManager todoManager; //Les catégories sont rattachées à un TodoManager
+    private transient CategoryView view;
 
 
     public Category(String name) throws IllegalArgumentException{
@@ -21,12 +28,29 @@ public class Category implements Serializable {
 
         this.name = name;
         this.tasks = new ArrayList<Task>();
-        this.categories.add(this);
+        categories.add(this);
+
+        setObservers();
+    }
+
+    private void setObservers() {
+        ArrayList<ObserverPanel> obs = todoManager.getFrame().getTabs();
+        for (ObserverPanel o : obs){
+            addObserver(o);
+        }
+        System.out.println("Notifying");
+        setChanged();
+
+    }
+
+    public static void setTodoManager(TodoManager todoManager) {
+        Category.todoManager = todoManager;
     }
 
     public void addTask(Task t){
         tasks.add(t);
         Task.sortByDueDate(tasks);
+        setChanged();
     }
 
     public static Category getAucune(){
@@ -107,5 +131,23 @@ public class Category implements Serializable {
 
     public String toString(){
         return  name;
+    }
+
+    public CategoryView getView() {
+        return view;
+    }
+
+    public void setView(CategoryView v){
+        view = v;
+        addObserver(v);
+    }
+
+    public static Category findByName(String n){
+        for (Category c : getCategories()){
+            if (c.getName().equals(n)){
+                return c;
+            }
+        }
+        return null;
     }
 }

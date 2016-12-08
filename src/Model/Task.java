@@ -19,9 +19,10 @@ public class Task extends Observable implements Serializable {
     protected LocalDate echeance = LocalDate.now();
     protected LocalDate doneDate = null;
     protected int progress = 0;
-    protected TaskView view;
+    protected transient TaskView view;
 
     public Task(String name){
+        setName(name);
         Category c = Category.getAucune();
         c.addTask(this);
     }
@@ -75,6 +76,12 @@ public class Task extends Observable implements Serializable {
     }
 
     public void setProgress(int progress) {
+
+        if (progress > 100 || progress < 0){
+            throw new IllegalArgumentException("L'avancement doit être compris entre 0 et 100");
+            //Todo : ajouter tests ad hoc
+        }
+
         if(progress == 100){
             doneDate = LocalDate.now();
         }
@@ -159,8 +166,50 @@ public class Task extends Observable implements Serializable {
     public void setView(TaskView v){
         view = v;
         addObserver(v);
+        setChanged();
+        notifyObservers();
     }
     public TaskView getView() {
         return view;
+    }
+
+    //Todo : empecher deux tâches d'avoir le même nom
+    public static Task findByName(String n){
+        ArrayList<Task> tasks = allTasks();
+        Task t = null;
+        for (Task ts : tasks){
+            if (ts.getName().equals(n)){
+                t = ts;
+            }
+        }
+        return t;
+    }
+
+    public Category findContainer(){
+        for (Category c : Category.getCategories()){
+            if (c.getTasks().contains(this))
+                return c;
+        }
+        return null;
+    }
+
+    public void moveToCategory(Category dest){
+        ArrayList<Category> cats = Category.getCategories();
+        Category myCat = null;
+
+        //Recherche de la catégorie contenante : parcours partiel
+        for (Category c : cats){
+            if (c.getTasks().contains(this)){
+                myCat = c;
+                break;
+            }
+        }
+
+        myCat.removeTaskFromCategory(this);
+        dest.addTask(this);
+
+        setChanged();
+        notifyObservers();
+
     }
 }

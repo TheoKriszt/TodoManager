@@ -11,11 +11,12 @@ import java.util.Observer;
 /**
  * Created by Theo on 07/12/2016.
  */
-public class TaskView extends JPanel implements Observer{
+public class TaskView extends ObserverPanel{
 
     protected TaskController taskController;
-    protected JLabel nameLabel, endDateLabel, progressLabel;
+    protected JLabel nameLabel, categoryLabel, endDateLabel, progressLabel;
     protected JButton removeButton, editButton, moveButton;
+    protected JPanel controlPanel, titlesPanel;
 
     public JLabel getNameLabel() {
         return nameLabel;
@@ -43,32 +44,46 @@ public class TaskView extends JPanel implements Observer{
     }
 
     public TaskView(TaskController tc){
-        super(new BorderLayout(5, 5));
+        setLayout(new BorderLayout(5, 5));
+        setMinimumSize(new Dimension(200, 300));
 
         taskController = tc;
-        taskController.setListeners(this);
 
         setBorder(BorderFactory.createLineBorder(Color.black));
 
         nameLabel = new JLabel("",JLabel.CENTER);
+        categoryLabel = new JLabel("",JLabel.CENTER);
         endDateLabel = new JLabel("", JLabel.RIGHT);
         progressLabel = new JLabel("%", JLabel.CENTER);
 
-        editButton = new JButton("Mod");
-        removeButton = new JButton("Sup");
-        moveButton = new JButton("Dép");
+        editButton = new JButton("Modifier");
+        removeButton = new JButton("Supprimer");
+        moveButton = new JButton("Déplacer");
 
-        add(nameLabel, BorderLayout.NORTH);
+        controlPanel = new JPanel();
+        titlesPanel = new JPanel();
+        titlesPanel.setLayout(new BoxLayout(titlesPanel, BoxLayout.Y_AXIS));
+
+
+        titlesPanel.add(nameLabel);
+        titlesPanel.add(categoryLabel);
         add(endDateLabel, BorderLayout.EAST);
         add(progressLabel, BorderLayout.SOUTH);
-        add(editButton, BorderLayout.SOUTH);
-        add(moveButton, BorderLayout.SOUTH);
-        add(removeButton, BorderLayout.SOUTH);
+
+        controlPanel.add(editButton);
+        controlPanel.add(moveButton);
+        controlPanel.add(removeButton);
+
+        add(controlPanel, BorderLayout.SOUTH);
+        add(titlesPanel, BorderLayout.NORTH);
+
+        taskController.setListeners(this);
 
     }
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("TaskView::Update()");
         if (o instanceof Task){
             Task t = (Task)o;
             nameLabel.setText(t.getName());

@@ -1,11 +1,13 @@
 package Controller;
 
+import Model.Category;
 import Model.Task;
 import View.TaskView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by Theo on 08/12/2016.
@@ -24,11 +26,6 @@ public class TaskController {
      */
     public void setListeners(TaskView v) {
         JButton removeButton, editButton, moveButton;
-        /*
-        nameLabel = v.getNameLabel();
-        endDateLabel = v.getEndDateLabel();
-        progressLabel = v.getProgressLabel();
-        */
 
         editButton = v.getEditButton();
         removeButton = v.getRemoveButton();
@@ -45,6 +42,7 @@ public class TaskController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onRemoveButtonPressed();
+                v.remove(removeButton);
             }
         });
 
@@ -70,7 +68,26 @@ public class TaskController {
     }
 
     private void onMoveButtonPressed(){
+        System.out.println("Moving task " + task.getName());
+        ArrayList<Category> cats = Category.getCategories();
+        String[] possibilities = new String[cats.size()];
+        for (int i=0; i<cats.size(); i++){
+            possibilities[i] = cats.get(i).getName();
+        }
 
+        String s = (String)
+        JOptionPane.showInputDialog(
+                task.getView(),
+                "Vers quelle catégorie déplacer la tâche ?",
+                "Changement de catégorie",
+                JOptionPane.QUESTION_MESSAGE, //PLAIN_MESSAGE,
+                null,
+                possibilities,
+                "Aucune"
+        );
+
+        Category destination = Category.findByName(s);
+        task.moveToCategory(destination);
     }
 
     private void onRemoveButtonPressed(){

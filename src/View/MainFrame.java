@@ -3,8 +3,11 @@ package View;
 import Model.TodoManager;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * Created by Theo on 07/12/2016.
@@ -26,11 +29,8 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setSize(new Dimension(600, 500));
 
-//        tabGeneral = new JPanel();      //TODO : spécialiser sur la bonne vue
-//        tabCategories = new JPanel();   //Todo : idem
-//        tabBilan = new JPanel();        //Todo : idem
-
         todoManager = tm;
+        tm.setFrame(this);
 
         buildMenu();
         buildTabs();
@@ -53,45 +53,53 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 //super.windowClosing(e);
                 todoManager.close();
+                System.out.println("Appel à close() depuis le bouton fenêtre");
             }
         });
 
         menuItemQuitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Appel à close() depuis le menuItem");
                 todoManager.close();
+
             }
         });
+
+        ChangeListener changeListener = new ChangeListener() {
+            public void stateChanged(ChangeEvent changeEvent) {
+                JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+                int index = sourceTabbedPane.getSelectedIndex();
+                System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
+            }
+        };
+        tabbedPane.addChangeListener(changeListener);
     }
 
     private void buildTabs() {
         tabbedPane = new JTabbedPane();
 
-        /*
-        tabGeneral = makeTextPanel("Général");
-        tabCategories = makeTextPanel("Catégories");
-        tabBilan = makeTextPanel("Bilan");
-        */
-
-        tabGeneral = new GeneralPanel();
-        tabCategories = new JPanel();
-        tabBilan = new JPanel();
+        tabGeneral = new GeneralPanel ();
+        tabCategories = new CategoriesPanel();
+        tabBilan = new BilanPanel();
 
         tabbedPane.addTab("Général", tabGeneral);
         tabbedPane.addTab("Catégories", tabCategories);
         tabbedPane.addTab("Bilan", tabBilan);
 
+
         setContentPane(tabbedPane);
 
     }
 
-    protected JComponent makeTextPanel(String text) {
-        JPanel panel = new JPanel(false);
-        JLabel filler = new JLabel(text);
-        filler.setHorizontalAlignment(JLabel.CENTER);
-        panel.setLayout(new GridLayout(1, 1));
-        panel.add(filler);
-        return panel;
+    public ArrayList<ObserverPanel> getTabs(){
+        ArrayList<ObserverPanel> tabs = new ArrayList<>();
+        for (int i=0; i<tabbedPane.getTabCount(); i++){
+            //tabs.add((ObserverPanel) tabbedPane.getTabComponentAt(i));
+            tabs.add((ObserverPanel) tabbedPane.getComponentAt(i));
+        }
+        //tabs.add((ObserverPanel) tabbedPane.getComponentAt(1));
+        return tabs;
     }
 
     private void buildMenu() {

@@ -1,5 +1,7 @@
 package Model;
 
+import View.MainFrame;
+
 import java.io.IOException;
 import java.util.Observable;
 
@@ -9,9 +11,11 @@ import java.util.Observable;
 public class TodoManager extends Observable {
 
     private SaveFileManager saveFileManager;
+    private MainFrame frame;
 
     public TodoManager(){
 
+        Category.setTodoManager(this);
 
     }
 
@@ -32,5 +36,13 @@ public class TodoManager extends Observable {
         }
 
         System.exit(status);
+    }
+
+    public void setFrame(MainFrame frame) {
+        this.frame = frame;
+    }
+
+    public MainFrame getFrame() {
+        return frame;
     }
 }
