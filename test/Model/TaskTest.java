@@ -1,6 +1,5 @@
 package Model;
 
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +46,7 @@ public class TaskTest{
 
     @Test (expected=IllegalArgumentException.class)
     public void testNomNonvide(){
-        SimpleTask nomVide = new SimpleTask(""); //argument chaîne vide interdit
+        Task nomVide = new SimpleTask(""); //argument chaîne vide interdit
     }
 
     @Test

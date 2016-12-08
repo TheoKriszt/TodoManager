@@ -25,7 +25,7 @@ public class CategoryTest{
         cats.add(travail);
         Category.setCategories(cats);
 
-        t = new SimpleTask("move me", Category.categoryAucune());
+        t = new SimpleTask("move me", Category.getAucune());
         base = new Category("Base");
 
     }
@@ -57,7 +57,7 @@ public class CategoryTest{
 
     @Test
     public void testCategoryAucune() throws Exception {
-        assertEquals(Category.categoryAucune(), new Category("Aucune"));
+        assertEquals(Category.getAucune(), new Category("Aucune"));
 
     }
 
@@ -65,7 +65,7 @@ public class CategoryTest{
     @Test
     public void testMoveTaskToCategory() throws Exception {
 
-        Category.categoryAucune().moveTaskToCategory(t, base);
+        Category.getAucune().moveTaskToCategory(t, base);
         assertEquals(t, base.getTasks().get(0));
     }
 
@@ -94,7 +94,7 @@ public class CategoryTest{
         base.addTask(t);
         base.removeCategory(); //Rapatrie les tâches de base vers la catégorie Aucune
 
-        assertTrue(Category.categoryAucune().getTasks().contains(t));
+        assertTrue(Category.getAucune().getTasks().contains(t));
     }
 
 

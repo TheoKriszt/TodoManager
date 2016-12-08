@@ -11,7 +11,7 @@ public class GeneralPanel extends JPanel {
 
     public GeneralPanel(){
         for (Task t : Task.allTasks()){
-            add(new TaskView(t));
+            //add(new TaskView(t));
         }
     }
 

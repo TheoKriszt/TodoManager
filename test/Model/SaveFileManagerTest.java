@@ -4,12 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
 import static org.junit.Assert.*;
 
@@ -77,7 +72,7 @@ public class SaveFileManagerTest {
         O.readFromFile();
 
         assertTrue(
-                Category.categoryAucune().getTasks().contains(t)
+                Category.getAucune().getTasks().contains(t)
         );
 
     }

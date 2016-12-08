@@ -1,22 +1,21 @@
 package Model;
 
+import View.TaskView;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Observable;
 
 /**
  * Created by achaillot on 05/12/16.
  */
-public abstract class Task implements Serializable {
+public class Task extends Observable implements Serializable {
 
-    public String getName() {
-        return name;
-    }
+    protected TaskView view;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public LocalDate getEcheance() {
         return echeance;
@@ -37,13 +36,34 @@ public abstract class Task implements Serializable {
     protected int progress = 0;
 
 
+    public Task(TaskView v){
+        view = v;
+        addObserver(view);
+    }
+
+    /**
+     * Deprecated : constuire avec la taskVies
+     * Todo : remove constructor
+     * @param name
+     */
+    @Deprecated
     public Task(String name){
+        Category c = Category.getAucune();
+        c.addTask(this);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) throws UnsupportedOperationException, IllegalArgumentException {
+        if (doneDate != null){
+            throw new UnsupportedOperationException("Impossible de renommer une tâche après sa complétion");
+        }
         if (name.isEmpty()){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Interdiction de donner un nom vide à une tâche");
         }
         this.name = name;
-        Category c = Category.categoryAucune();
-        c.addTask(this);
     }
 
     public Task(String name,Category c){

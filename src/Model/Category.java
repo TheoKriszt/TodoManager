@@ -2,7 +2,6 @@ package Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by achaillot on 05/12/16.
@@ -30,7 +29,7 @@ public class Category implements Serializable {
         Task.sortByDueDate(tasks);
     }
 
-    public static Category categoryAucune(){
+    public static Category getAucune(){
         return categories.get(0);
     }
 
@@ -44,7 +43,7 @@ public class Category implements Serializable {
         if(tasks.contains(t)) {
             tasks.remove(t);
             tasks.trimToSize();
-            categoryAucune().addTask(t);
+            getAucune().addTask(t);
         }
     }
 
@@ -52,7 +51,10 @@ public class Category implements Serializable {
         //Todo : retirer des categories et archiver la task
     }
 
-    public void renameCategory(String newName){
+    public void renameCategory(String newName) throws UnsupportedOperationException {
+        if (equals(getAucune())){
+            throw new UnsupportedOperationException("Interdiction de renommer la Catégorie \""+getName()+"\"");
+        }
         this.name = newName;
     }
 
@@ -60,6 +62,9 @@ public class Category implements Serializable {
      *
      */
     public void removeCategory(){
+        if (equals(getAucune())){
+            throw new UnsupportedOperationException("Interdiction de supprimer la categorie \""+getName()+"\"");
+        }
         //Iteration sur un clone sinon rencontre des problèmes de modifications concurrentes sur l'ArrayList
         for (Task t : (ArrayList<Task>)tasks.clone()){
             removeTaskFromCategory(t);
