@@ -36,9 +36,9 @@ public class ContaintBilanPanel extends JPanel {
         bilan.loadTasks();
 
         name = new JLabel("Bilan",JLabel.CENTER);
-        taskNotReleasedAndLate = new JLabel("Tâches non réalisé et en retard : " + Float.toString(bilan.getTasksNotReleasedAndLate()) + " %",JLabel.CENTER);
-        taskReleasedInTime = new JLabel("Tâches réalisé dans les temps : " + Float.toString(bilan.getTasksReleasedInTime()) + " %",JLabel.CENTER);
-        taskReleasedLate = new JLabel("Tâches réalisé en retard : " + Float.toString(bilan.getTasksReleasedLate()) + " %",JLabel.CENTER);
+        taskNotReleasedAndLate = new JLabel("Tâches non réalisé et en retard : " + bilan.getPercentageTasksNotReleasedAndLate() + " %",JLabel.CENTER);
+        taskReleasedInTime = new JLabel("Tâches réalisé dans les temps : " + bilan.getPercentageTasksReleasedInTime() + " %",JLabel.CENTER);
+        taskReleasedLate = new JLabel("Tâches réalisé en retard : " + bilan.getPercentageTasksReleasedLate() + " %",JLabel.CENTER);
 
         eastPanel.add(taskNotReleasedAndLate);
         eastPanel.add(taskReleasedLate);

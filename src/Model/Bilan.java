@@ -49,12 +49,13 @@ public class Bilan {
         }
     }
 
-    private void getPercentage(float f){
+    private int getPercentage(float f){
         if (!tasks.isEmpty()){
             f = (100*f)/tasks.size();
         }else {
             f = 0f;
         }
+        return (int)f;
     }
 
     public LocalDate getStart() {
@@ -73,16 +74,16 @@ public class Bilan {
         this.end = end;
     }
 
-    public float getTasksReleasedInTime() {
-        return tasksReleasedInTime;
+    public int getPercentageTasksReleasedInTime() {
+        return getPercentage(tasksReleasedInTime);
     }
 
-    public float getTasksReleasedLate() {
-        return tasksReleasedLate;
+    public int getPercentageTasksReleasedLate() {
+        return getPercentage(tasksReleasedLate);
     }
 
-    public float getTasksNotReleasedAndLate() {
-        return tasksNotReleasedAndLate;
+    public int getPercentageTasksNotReleasedAndLate() {
+        return getPercentage(tasksNotReleasedAndLate);
     }
 
     public ArrayList<Task> getTasks() {
