@@ -26,7 +26,7 @@ public class Bilan {
         return O;
     }
 
-    private void loadTasks(){
+    public void loadTasks(){
         ArrayList<Category> categories = Category.getCategories();
         for (Category c : categories){
             for (Task t : c.getTasks()){

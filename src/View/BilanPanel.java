@@ -23,7 +23,7 @@ public class BilanPanel extends JPanel {
 
 
     public BilanPanel(){
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout(0,100));
 
         /* fonctionne avec JFormattedTextField mais problème avec le parse
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -53,6 +53,7 @@ public class BilanPanel extends JPanel {
                     LocalDate ldb = LocalDate.from(Instant.ofEpochMilli(d.getTime()));
                     d = sdf.parse(dateFin.getText());
                     LocalDate ldf = LocalDate.from(Instant.ofEpochMilli(d.getTime()));*/
+                centerPan.removeAll();
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
                 dtf.withLocale(Locale.FRANCE);
                 LocalDate ldb = LocalDate.parse(dateDebut.getText(),dtf);
@@ -60,6 +61,7 @@ public class BilanPanel extends JPanel {
 
                 JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
                 centerPan.add(containtBilan);
+                centerPan.validate();
 
             }
         });
@@ -74,6 +76,5 @@ public class BilanPanel extends JPanel {
         northPanel.add(jp,BorderLayout.CENTER);
         this.add(northPanel,BorderLayout.NORTH);
         this.add(centerPan, BorderLayout.CENTER);
-
     }
 }

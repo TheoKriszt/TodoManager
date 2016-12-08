@@ -16,16 +16,52 @@ public class ContaintBilanPanel extends JPanel {
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
+    private JLabel name, taskNotReleasedAndLate, taskReleasedInTime, taskReleasedLate;
+    private JPanel westPanel, eastPanel;
+
     public ContaintBilanPanel(LocalDate db, LocalDate df){
+
+        super(new BorderLayout(100,30));
+        GridLayout gl = new GridLayout(2,1);
+        int nbLineOfGl = 2;
+        westPanel = new JPanel(gl);
+        eastPanel = new JPanel(new GridLayout(3,1));
+        setBorder(BorderFactory.createLineBorder(Color.black));
 
         this.dateDebut = db;
         this.dateFin = df;
+        Bilan bilan = Bilan.instance();
+        bilan.setStart(this.dateDebut);
+        bilan.setEnd(this.dateFin);
+        bilan.loadTasks();
 
-        System.out.println("lalala");
+        name = new JLabel("Bilan",JLabel.CENTER);
+        taskNotReleasedAndLate = new JLabel("Tâches non réalisé et en retard : " + Float.toString(bilan.getTasksNotReleasedAndLate()) + " %",JLabel.CENTER);
+        taskReleasedInTime = new JLabel("Tâches réalisé dans les temps : " + Float.toString(bilan.getTasksReleasedInTime()) + " %",JLabel.CENTER);
+        taskReleasedLate = new JLabel("Tâches réalisé en retard : " + Float.toString(bilan.getTasksReleasedLate()) + " %",JLabel.CENTER);
+
+        eastPanel.add(taskNotReleasedAndLate);
+        eastPanel.add(taskReleasedLate);
+        eastPanel.add(taskReleasedInTime);
+
+        westPanel.add(new JLabel("Tâches à réaliser sur la période : "));
+
+        for(Task t : bilan.getTasks()){
+            nbLineOfGl++;
+            westPanel.add(new JLabel(t.toString()));
+            gl.setRows(nbLineOfGl);
+            westPanel.setLayout(gl);
+        }
+
+        add(name,BorderLayout.NORTH);
+        add(eastPanel,BorderLayout.EAST);
+        add(westPanel, BorderLayout.WEST);
+
     }
 
-    public void paintComponent(Graphics g){
+  /*  public void paintComponent(Graphics g){
         Bilan bilan = Bilan.instance();
+        bilan.loadTasks();
         bilan.setStart(this.dateDebut);
         bilan.setEnd(this.dateFin);
         int height = this.getHeight();
@@ -47,6 +83,6 @@ public class ContaintBilanPanel extends JPanel {
         paint(g);
 
         System.out.println("lalala");
-    }
+    }*/
 
 }
