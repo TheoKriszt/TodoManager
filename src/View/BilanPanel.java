@@ -46,8 +46,8 @@ public class BilanPanel extends ObserverPanel {
         JDatePanelImpl startDatePanel = new JDatePanelImpl(startModel, p);
         JDatePanelImpl endDatePanel = new JDatePanelImpl(endModel, p);
 
-        DateTime startDate = (DateTime) startDatePanel.getModel().getValue();
-        DateTime endDate = (DateTime) startDatePanel.getModel().getValue();
+        LocalDateTime startDate = (LocalDateTime) startDatePanel.getModel().getValue();
+        LocalDateTime endDate = (LocalDateTime) startDatePanel.getModel().getValue();
 
         //Gestion de la convertion calendar => localDate a l'aide de JodaTime
         /*TimeZone tz = startDate.getTimeZone();
