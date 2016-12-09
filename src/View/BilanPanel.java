@@ -83,13 +83,9 @@ public class BilanPanel extends ObserverPanel {
                 centerPan.removeAll();
                 //Todo : removeAll ineffectif (déjà résolu ?)
                 //Todo : Utiliser un formatter si besoin, adapter l'architecture au datePicker
-                System.out.println("date de debut : " + startDatePanel.getModel().getValue().toString());
-                System.out.println("date de fin : " + endDatePanel.getModel().getValue().toString());
 
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
-                dtf.withLocale(Locale.FRANCE);
-                LocalDate ldb = startDate.toLocalDate();
-                LocalDate ldf = endDate.toLocalDate();
+                LocalDate ldb = new LocalDate(startDatePanel.getModel().getYear(), startDatePanel.getModel().getMonth(), startDatePanel.getModel().getDay());
+                LocalDate ldf = new LocalDate(endDatePanel.getModel().getYear(), endDatePanel.getModel().getMonth(), endDatePanel.getModel().getDay());
 
                 JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
                 centerPan.add(containtBilan);
