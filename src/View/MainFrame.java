@@ -126,6 +126,7 @@ public class MainFrame extends JFrame {
                     tv = new TaskView(tc);
                     t.setView(tv);
                     t.update();
+                    t.findContainer().update();
 
                 }catch (IllegalArgumentException ex){
                     JOptionPane.showMessageDialog(null, "Erreur lors de la création de la tâche: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
@@ -138,6 +139,8 @@ public class MainFrame extends JFrame {
                 JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
                 int index = sourceTabbedPane.getSelectedIndex();
                 System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
+                System.out.println("new Tab is " + sourceTabbedPane.getComponentAt(index).getClass().getName());
+
             }
         };
         tabbedPane.addChangeListener(changeListener);
@@ -165,6 +168,7 @@ public class MainFrame extends JFrame {
         for (int i=0; i<tabbedPane.getTabCount(); i++){
             tabs.add((ObserverPanel) tabbedPane.getComponentAt(i));
         }
+        //tabs.add((ObserverPanel) tabbedPane.getComponentAt(1));
 
         return tabs;
     }

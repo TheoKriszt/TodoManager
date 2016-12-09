@@ -88,9 +88,7 @@ public class TaskController {
         );
 
         Category destination = Category.findByName(s);
-        System.out.println("Asking to move to " + destination.getName());
         task.moveToCategory(destination);
-        System.out.println("Nouvelle catégorie : " + task.findContainer().getName());
     }
 
     private void onRemoveButtonPressed(){

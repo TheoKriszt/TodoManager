@@ -161,6 +161,7 @@ public class Category extends Observable implements Serializable {
             CategoryView cv = new CategoryView(cc);
             c.setView(cv);
             c.update();
+            c.setObservers();
             System.out.println("New Category " + c.getName() + " imported");
         }
 

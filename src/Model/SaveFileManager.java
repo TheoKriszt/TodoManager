@@ -59,6 +59,7 @@ public class SaveFileManager  {
         ArrayList<Category> categories = (ArrayList < Category >) ois.readObject();
 
         Category.setCategories(categories);
+        Category.getAucune().update();
 
 
         if(ois != null){
