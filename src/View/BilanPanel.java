@@ -59,10 +59,6 @@ public class BilanPanel extends ObserverPanel {
         jodaTz = DateTimeZone.forID(tz.getID());
         DateTime endDateTime = new DateTime(endDate.getTimeInMillis(),jodaTz);
 
-        LocalDate ld = new LocalDate();
-
-
-
         JLabel periode = new JLabel("Saisir la période pour l'édition du bilan");
 
         JLabel db = new JLabel("Début de la période :");
@@ -94,7 +90,7 @@ public class BilanPanel extends ObserverPanel {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
                 dtf.withLocale(Locale.FRANCE);
                 LocalDate ldb = startDateTime.toLocalDate();
-                LocalDate ldf = LocalDate.parse(dateFin.getText(),dtf);
+                LocalDate ldf = endDateTime.toLocalDate();
 
                 JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
                 centerPan.add(containtBilan);
