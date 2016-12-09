@@ -1,6 +1,13 @@
 package View;
 
+import Controller.CategoryController;
+import Controller.TaskController;
+import Model.Category;
+import Model.Task;
 import Model.TodoManager;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -8,6 +15,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Created by Theo on 07/12/2016.
@@ -62,6 +70,44 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Appel à close() depuis le menuItem");
                 todoManager.close();
+
+            }
+        });
+
+        //menuItemNewTask, menuItemNewCategory
+        menuItemNewCategory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Category c;
+                CategoryController cc;
+                CategoryView cv;
+
+                String s = (String)JOptionPane.showInputDialog(
+                        null,
+                        "Donner un nom à la nouvelle catégorie",
+                        "Nouvelle catégorie",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        null,
+                        "Nouvelle catégorie");
+
+                try{
+                    c = new Category(s);
+                    cc = new CategoryController(c);
+                    cv = new CategoryView(cc);
+                    c.setView(cv);
+                }catch (IllegalArgumentException ex){
+                    JOptionPane.showMessageDialog(null, "Erreur lors de la création de la catégorie: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
+                }
+
+
+                //t.setView(tv);
+            }
+        });
+
+        menuItemNewTask.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
             }
         });

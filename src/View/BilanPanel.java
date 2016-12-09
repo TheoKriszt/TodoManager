@@ -2,6 +2,9 @@ package View;
 
 
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -11,9 +14,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * Created by Antho on 07/12/2016.
@@ -32,6 +33,27 @@ public class BilanPanel extends ObserverPanel {
         DateFormatter dateFormatter=new DateFormatter(sdf);
         DefaultFormatterFactory dateFormatterFactory =new DefaultFormatterFactory(dateFormatter,new DateFormatter(),dateFormatter);
         */
+
+        /**
+         * TODO : insérer les datePickers comme il faut
+         */
+        Properties p = new Properties();
+        p.put("text.today", "Today"); //Date par défaut du datepicker : aujourd'hui
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        UtilDateModel startModel = new UtilDateModel();
+        UtilDateModel endModel = new UtilDateModel();
+
+        JDatePanelImpl startDatePanel = new JDatePanelImpl(startModel, p);
+        JDatePanelImpl endDatePanel = new JDatePanelImpl(endModel, p);
+        centerPan.add(startDatePanel);
+        centerPan.add(endDatePanel);
+        Calendar startDate = (Calendar) startDatePanel.getModel().getValue();
+        Calendar endDate = (Calendar) startDatePanel.getModel().getValue();
+
+
+
+
 
         JLabel periode = new JLabel("Saisir la période pour l'édition du bilan");
 
@@ -56,8 +78,11 @@ public class BilanPanel extends ObserverPanel {
                     d = sdf.parse(dateFin.getText());
                     LocalDate ldf = LocalDate.from(Instant.ofEpochMilli(d.getTime()));*/
                 centerPan.removeAll();
-                //Todo : removeAll ineffectif
-                //Todo : autoriser le d MM YYYY, voire utiliser une library de datePicker
+                //Todo : removeAll ineffectif (déjà résolu ?)
+                //Todo : Utiliser un formatter si besoin, adapter l'architecture au datePicker
+                System.out.println("date de debut : " + startDatePanel.getModel().getValue().toString());
+                System.out.println("date de fin : " + endDatePanel.getModel().getValue().toString());
+
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
                 dtf.withLocale(Locale.FRANCE);
                 LocalDate ldb = LocalDate.parse(dateDebut.getText(),dtf);

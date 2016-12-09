@@ -3,6 +3,7 @@ package Controller;
 import Model.Category;
 import View.CategoryView;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,9 +37,49 @@ public class CategoryController {
 
     private void editButtonPressed() {
 
+        String s = (String)JOptionPane.showInputDialog(
+                category.getView(),
+                "Complete the sentence:\n"
+                        + "\"Green eggs and...\"",
+                "Customized Dialog",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                category.getName());
+
+        if (!s.equals(category.getName())){ //ne modifier que si le nom change effectivement
+            try{
+                category.renameCategory(s);
+            } catch (IllegalArgumentException | UnsupportedOperationException e){
+                JOptionPane.showMessageDialog(category.getView(), "Erreur lors du renommage : " + e.getMessage(), "Erreur de renommage", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+
     }
 
     private void removeButtonPressed() {
+
+        Object[] options = {"Confirmer", "Annuler"};
+        int n = JOptionPane.showOptionDialog(category.getView(),
+                "Confirmer la suppression de la catégorie ?",
+                "Suppression de catégorie",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (n == 0){ //Suppression confirmée par l'utilisateur
+            try{
+                category.removeCategory();
+            }catch (UnsupportedOperationException e){
+                JOptionPane.showMessageDialog(category.getView(), "Erreur lors de la suppression : " + e.getMessage(), "Erreur de suppression", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
 
 
     }

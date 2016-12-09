@@ -21,13 +21,11 @@ public class Task extends Observable implements Serializable {
     protected int progress = 0;
     protected transient TaskView view;
 
-    public Task(String name){
-        setName(name);
+    public Task(String name) throws UnsupportedOperationException, IllegalArgumentException{
+        setName(name); //tentera de donner un nom, assure de base l'unicité par noms
         Category c = Category.getAucune();
         c.addTask(this);
     }
-
-
 
     public LocalDate getEcheance() {
         return echeance;
@@ -51,6 +49,9 @@ public class Task extends Observable implements Serializable {
         }
         if (name.isEmpty()){
             throw new IllegalArgumentException("Interdiction de donner un nom vide à une tâche");
+        }
+        if (Task.findByName(name) != null){
+            throw new IllegalArgumentException("Le nom de tâche " + name + " est déjà pris");
         }
         this.name = name;
     }
@@ -204,12 +205,26 @@ public class Task extends Observable implements Serializable {
                 break;
             }
         }
+        System.out.println("Ma catégorie a étét trouvée comme étant " + myCat.getName());
 
-        myCat.removeTaskFromCategory(this);
-        dest.addTask(this);
+        myCat.moveTaskToCategory(this, dest);
 
         setChanged();
         notifyObservers();
+    }
 
+    /**
+     * Permet de déclencher un setChanged/notifyObservers depuis l'exterieur
+     */
+    public void update(){
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Supprime la tâche pour de bon
+     */
+    public void eraseTask(){
+        findContainer().eraseTask(this);
     }
 }

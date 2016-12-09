@@ -1,6 +1,7 @@
 package View;
 
 import Controller.TaskController;
+import Model.LongTask;
 import Model.Task;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.util.Observer;
 public class TaskView extends ObserverPanel{
 
     protected TaskController taskController;
-    protected JLabel nameLabel, categoryLabel, endDateLabel, progressLabel;
+    protected JLabel nameLabel, categoryLabel, startDateLabel, endDateLabel, progressLabel;
     protected JButton removeButton, editButton, moveButton;
     protected JPanel controlPanel, titlesPanel;
 
@@ -54,6 +55,7 @@ public class TaskView extends ObserverPanel{
         nameLabel = new JLabel("",JLabel.CENTER);
         categoryLabel = new JLabel("",JLabel.CENTER);
         endDateLabel = new JLabel("", JLabel.RIGHT);
+        startDateLabel = new JLabel("", JLabel.LEFT);
         progressLabel = new JLabel("%", JLabel.CENTER);
 
         editButton = new JButton("Modifier");
@@ -68,6 +70,7 @@ public class TaskView extends ObserverPanel{
         titlesPanel.add(nameLabel);
         titlesPanel.add(categoryLabel);
         add(endDateLabel, BorderLayout.EAST);
+        add(startDateLabel, BorderLayout.WEST);
         add(progressLabel, BorderLayout.SOUTH);
 
         controlPanel.add(editButton);
@@ -86,9 +89,15 @@ public class TaskView extends ObserverPanel{
         System.out.println("TaskView::Update()");
         if (o instanceof Task){
             Task t = (Task)o;
+            categoryLabel.setText("["+t.findContainer().getName()+"]");
+            System.err.println("reseting task cat name to " + categoryLabel.getText());
             nameLabel.setText(t.getName());
             endDateLabel.setText(t.getEcheance().toString());
             progressLabel.setText(t.getProgress()+" %");
+
+            if (t instanceof LongTask){
+                startDateLabel.setText(((LongTask) t).getStartDate().toString());
+            }
         }
 
     }

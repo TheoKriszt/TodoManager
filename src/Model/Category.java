@@ -25,6 +25,9 @@ public class Category extends Observable implements Serializable {
         if (name.isEmpty()){
             throw new IllegalArgumentException();
         }
+        if (Category.findByName(name) != null){
+            throw new IllegalArgumentException("La catégorie \""+name+"\" existe déjà");
+        }
 
         this.name = name;
         this.tasks = new ArrayList<Task>();
@@ -58,17 +61,25 @@ public class Category extends Observable implements Serializable {
     }
 
     public void moveTaskToCategory(Task t,Category c){
-        removeTaskFromCategory(t);
+        System.out.println("Moving task " + t.getName() + " from cat " + getName() + " to " + c.getName());
+        eraseTask(t);
         c.addTask(t);
+        setChanged();
+        notifyObservers();
     }
 
     // vérifier que on est bien sur la catégory contenante
+    @Deprecated
     public void removeTaskFromCategory(Task t){
+        System.out.println("Removing task " + t.getName() + " from cat " + name);
         if(tasks.contains(t)) {
             tasks.remove(t);
             tasks.trimToSize();
             getAucune().addTask(t);
-        }
+
+        }else System.err.println("Task not found in cat");
+        setChanged();
+        notifyObservers();
     }
 
     public void archiveCompletedTask(Task t){
@@ -79,7 +90,15 @@ public class Category extends Observable implements Serializable {
         if (equals(getAucune())){
             throw new UnsupportedOperationException("Interdiction de renommer la Catégorie \""+getName()+"\"");
         }
+        if (Category.findByName(newName) != null){
+            throw new IllegalArgumentException("Impossible de renommer la catégorie : une autre catégorie nommée " + newName + " existe déjà");
+        }
         this.name = newName;
+        for (Task t : tasks){
+            t.update();
+        }
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -91,10 +110,14 @@ public class Category extends Observable implements Serializable {
         }
         //Iteration sur un clone sinon rencontre des problèmes de modifications concurrentes sur l'ArrayList
         for (Task t : (ArrayList<Task>)tasks.clone()){
-            removeTaskFromCategory(t);
+            t.moveToCategory(getAucune());
+            //removeTaskFromCategory(t);
         }
         categories.remove(this);
         categories.trimToSize();
+
+        setChanged();
+        notifyObservers();
     }
 
     @Override
@@ -140,6 +163,8 @@ public class Category extends Observable implements Serializable {
     public void setView(CategoryView v){
         view = v;
         addObserver(v);
+        setChanged();
+        notifyObservers();
     }
 
     public static Category findByName(String n){
@@ -149,5 +174,22 @@ public class Category extends Observable implements Serializable {
             }
         }
         return null;
+    }
+
+    public void eraseTask(Task task) {
+        if (tasks.contains(task)){
+            tasks.remove(task);
+            tasks.trimToSize();
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    @Deprecated
+    public void eraseCategory(){
+        removeCategory(); //expatrier les éventuelles tâches sur Aucune
+        categories.remove(this);
+        setChanged();
+        notifyObservers();
     }
 }

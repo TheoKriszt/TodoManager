@@ -65,6 +65,7 @@ public class TaskController {
 
     private void onEditButtonPressed(){
 
+
     }
 
     private void onMoveButtonPressed(){
@@ -87,10 +88,26 @@ public class TaskController {
         );
 
         Category destination = Category.findByName(s);
+        System.out.println("Asking to move to " + destination.getName());
         task.moveToCategory(destination);
+        System.out.println("Nouvelle catégorie : " + task.findContainer().getName());
     }
 
     private void onRemoveButtonPressed(){
+
+        Object[] options = {"Confirmer", "Annuler"};
+        int n = JOptionPane.showOptionDialog(task.getView(),
+                "Confirmer la suppression de la tâche ?",
+                "Suppression de tâche",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (n == 0){ //Suppression confirmée par l'utilisateur
+            task.eraseTask();
+        }
 
     }
 }

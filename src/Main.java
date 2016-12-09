@@ -4,15 +4,7 @@ import Model.*;
 import View.CategoryView;
 import View.MainFrame;
 import View.TaskView;
-import View.TestFrame;
-
-import javax.swing.*;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-
 public class Main {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -47,7 +39,7 @@ public class Main {
 
         Task t1, t2, t3;
         t1 = new Task("Tache 1");
-        t2 = new Task("Tache 2");
+        t2 = new LongTask("Tache 2");
         t3 = new Task("Tache 3");
 
         TaskController tc1 = new TaskController(t1),
@@ -66,7 +58,6 @@ public class Main {
 
         /**
          * TODO :
-         * Ajouter listeners sur les TaskView
          * Quand cliqué, ouvre une popup de Lecture/Modif/Suppression
          *
          */

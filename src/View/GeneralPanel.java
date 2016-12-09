@@ -29,9 +29,11 @@ public class GeneralPanel extends ObserverPanel {
     @Override
     public void update(Observable o, Object arg) {
         System.out.println("GeneralPanel::update()");
+        removeAll();
         ArrayList<Task> tasks = Task.allTasks();
         Task.sortByDueDate(tasks);
         for (Task t : tasks){
+            System.out.println("Displaying task " + t.getName() + " [ " + t.findContainer().getName() + " ]");
             add(t.getView());
         }
         revalidate();
