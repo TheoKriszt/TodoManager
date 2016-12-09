@@ -41,11 +41,11 @@ public class Category extends Observable implements Serializable {
     }
 
     private void setObservers() {
+        deleteObservers();
         ArrayList<ObserverPanel> obs = todoManager.getFrame().getTabs();
-        for (ObserverPanel o : obs){
-            addObserver(o);
-        }
-        System.out.println("Notifying");
+
+        System.err.println("Adding observer mainframe to " + name);
+        addObserver(todoManager.getFrame());
         setChanged();
 
     }
@@ -68,8 +68,9 @@ public class Category extends Observable implements Serializable {
         System.out.println("Moving task " + t.getName() + " from cat " + getName() + " to " + c.getName());
         eraseTask(t);
         c.addTask(t);
-        setChanged();
-        notifyObservers();
+        update();
+//        setChanged();
+//        notifyObservers();
     }
 
     // vérifier que on est bien sur la catégory contenante
@@ -94,11 +95,7 @@ public class Category extends Observable implements Serializable {
             throw new IllegalArgumentException("Impossible de renommer la catégorie : une autre catégorie nommée " + newName + " existe déjà");
         }
         this.name = newName;
-        for (Task t : tasks){
-            t.update();
-        }
-        setChanged();
-        notifyObservers();
+        update();
     }
 
     /**
@@ -111,7 +108,6 @@ public class Category extends Observable implements Serializable {
         //Iteration sur un clone sinon rencontre des problèmes de modifications concurrentes sur l'ArrayList
         for (Task t : (ArrayList<Task>)tasks.clone()){
             t.moveToCategory(getAucune());
-            //removeTaskFromCategory(t);
         }
         categories.remove(this);
         categories.trimToSize();
@@ -153,16 +149,13 @@ public class Category extends Observable implements Serializable {
                 TaskController tc = new TaskController(t);
                 TaskView tv = new TaskView(tc);
                 t.setView(tv);
-                System.out.println("New Task " +t.getName() + " imported");
-                t.update();
             }
 
             CategoryController cc = new CategoryController(c);
             CategoryView cv = new CategoryView(cc);
             c.setView(cv);
-            c.update();
             c.setObservers();
-            System.out.println("New Category " + c.getName() + " imported");
+            c.update();
         }
 
         getAucune().update();
@@ -187,8 +180,7 @@ public class Category extends Observable implements Serializable {
     public void setView(CategoryView v){
         view = v;
         addObserver(v);
-        setChanged();
-        notifyObservers();
+        update();
     }
 
     public static Category findByName(String n){
@@ -204,8 +196,7 @@ public class Category extends Observable implements Serializable {
         if (tasks.contains(task)){
             tasks.remove(task);
             tasks.trimToSize();
-            setChanged();
-            notifyObservers();
+            update();
         }
     }
 

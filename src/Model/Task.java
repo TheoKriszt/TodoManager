@@ -167,8 +167,7 @@ public class Task extends Observable implements Serializable {
     public void setView(TaskView v){
         view = v;
         addObserver(v);
-        setChanged();
-        notifyObservers();
+        update();
     }
     public TaskView getView() {
         return view;
@@ -205,12 +204,8 @@ public class Task extends Observable implements Serializable {
                 break;
             }
         }
-        System.out.println("Ma catégorie a étét trouvée comme étant " + myCat.getName());
 
         myCat.moveTaskToCategory(this, dest);
-
-        setChanged();
-        notifyObservers();
     }
 
     /**
@@ -219,7 +214,7 @@ public class Task extends Observable implements Serializable {
     public void update(){
         setChanged();
         notifyObservers();
-        findContainer().update();
+        System.out.println("Fin Task::update()");
     }
 
     /**

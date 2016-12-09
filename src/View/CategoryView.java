@@ -15,6 +15,8 @@ import java.util.Observer;
  */
 public class CategoryView extends ObserverPanel{
 
+
+
     private JPanel tasksPanel, controlPanel;
     private JLabel nameLabel;
     private JButton editButton, removeButton;
@@ -53,8 +55,17 @@ public class CategoryView extends ObserverPanel{
         ArrayList<Task> tasks = ((Category)o).getTasks();
         Task.sortByDueDate(tasks);
         for (Task t : tasks){
+            t.update();
             tasksPanel.add(t.getView());
+
         }
+
+        revalidate();
+        repaint();
+    }
+
+    public JPanel getTasksPanel() {
+        return tasksPanel;
     }
 
     public JButton getEditButton() {

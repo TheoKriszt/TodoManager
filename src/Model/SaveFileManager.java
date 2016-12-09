@@ -1,5 +1,8 @@
 package Model;
 
+import View.ObserverPanel;
+
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -59,7 +62,8 @@ public class SaveFileManager  {
         ArrayList<Category> categories = (ArrayList < Category >) ois.readObject();
 
         Category.setCategories(categories);
-        Category.getAucune().update();
+        ((JTabbedPane)todoManager.getFrame().getContentPane()).getComponentAt(0).revalidate();
+        ((ObserverPanel)((JTabbedPane)todoManager.getFrame().getContentPane()).getComponentAt(0)).update(null, null);
 
 
         if(ois != null){

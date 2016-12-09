@@ -3,6 +3,7 @@ package Controller;
 import Model.Category;
 import Model.Task;
 import View.TaskView;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +43,7 @@ public class TaskController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onRemoveButtonPressed();
-                v.remove(removeButton);
+                //v.remove(removeButton); // dafuq ?
             }
         });
 
@@ -63,13 +64,14 @@ public class TaskController {
     // - Confirmer la suppression
     // Les popups peuvent afficher des messages d'erreur ? Déléguer à d'autres popups ?
 
-    private void onEditButtonPressed(){
+    private void onEditButtonPressed() throws NotImplementedException {
 
+        throw new NotImplementedException();
 
     }
 
     private void onMoveButtonPressed(){
-        System.out.println("Moving task " + task.getName());
+        System.err.println("Moving task " + task.getName());
         ArrayList<Category> cats = Category.getCategories();
         String[] possibilities = new String[cats.size()];
         for (int i=0; i<cats.size(); i++){
@@ -86,9 +88,12 @@ public class TaskController {
                 possibilities,
                 "Aucune"
         );
-
         Category destination = Category.findByName(s);
-        task.moveToCategory(destination);
+        if (!destination.equals(task.findContainer())){
+            task.moveToCategory(destination);
+        }
+
+
     }
 
     private void onRemoveButtonPressed(){
@@ -104,7 +109,10 @@ public class TaskController {
                 options[0]);
 
         if (n == 0){ //Suppression confirmée par l'utilisateur
+            Category c = task.findContainer();
             task.eraseTask();
+            //task.update();
+            c.update();
         }
 
     }

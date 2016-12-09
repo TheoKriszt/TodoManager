@@ -86,11 +86,10 @@ public class TaskView extends ObserverPanel{
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("TaskView::Update()");
+        System.out.println("TaskView::Update("+o.toString()+")");
         if (o instanceof Task){
             Task t = (Task)o;
             categoryLabel.setText("["+t.findContainer().getName()+"]");
-            System.err.println("reseting task cat name to " + categoryLabel.getText());
             nameLabel.setText(t.getName());
             endDateLabel.setText(t.getEcheance().toString());
             progressLabel.setText(t.getProgress()+" %");
@@ -99,6 +98,7 @@ public class TaskView extends ObserverPanel{
                 startDateLabel.setText(((LongTask) t).getStartDate().toString());
             }
         }
+        revalidate();
 
     }
 }

@@ -39,9 +39,8 @@ public class CategoryController {
 
         String s = (String)JOptionPane.showInputDialog(
                 category.getView(),
-                "Complete the sentence:\n"
-                        + "\"Green eggs and...\"",
-                "Customized Dialog",
+                "Entrez un nouveau nom pour la catégorie",
+                "Editer la catégorie",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
@@ -50,6 +49,7 @@ public class CategoryController {
         if (!s.equals(category.getName())){ //ne modifier que si le nom change effectivement
             try{
                 category.renameCategory(s);
+                category.update();
             } catch (IllegalArgumentException | UnsupportedOperationException e){
                 JOptionPane.showMessageDialog(category.getView(), "Erreur lors du renommage : " + e.getMessage(), "Erreur de renommage", JOptionPane.ERROR_MESSAGE);
             }
@@ -74,6 +74,7 @@ public class CategoryController {
         if (n == 0){ //Suppression confirmée par l'utilisateur
             try{
                 category.removeCategory();
+                category.update();
             }catch (UnsupportedOperationException e){
                 JOptionPane.showMessageDialog(category.getView(), "Erreur lors de la suppression : " + e.getMessage(), "Erreur de suppression", JOptionPane.ERROR_MESSAGE);
             }

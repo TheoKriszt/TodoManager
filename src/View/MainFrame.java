@@ -16,12 +16,14 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Properties;
 
 /**
  * Created by Theo on 07/12/2016.
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements Observer {
 
     private JMenuBar menuBar;
     private JMenu menuFichier, menuEdition;
@@ -44,14 +46,8 @@ public class MainFrame extends JFrame {
         buildMenu();
         buildTabs();
         setListeners();
-        fillTabs();
 
         setVisible(true);
-    }
-
-    private void fillTabs() {
-
-
     }
 
     private void setListeners() {
@@ -64,14 +60,12 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 //super.windowClosing(e);
                 todoManager.close();
-                System.out.println("Appel à close() depuis le bouton fenêtre");
             }
         });
 
         menuItemQuitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Appel à close() depuis le menuItem");
                 todoManager.close();
 
             }
@@ -125,8 +119,9 @@ public class MainFrame extends JFrame {
                     tc = new TaskController(t);
                     tv = new TaskView(tc);
                     t.setView(tv);
-                    t.update();
-                    t.findContainer().update();
+                    //t.update();
+                    //t.findContainer().update();
+                    update(null, null);
 
                 }catch (IllegalArgumentException ex){
                     JOptionPane.showMessageDialog(null, "Erreur lors de la création de la tâche: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
@@ -140,6 +135,7 @@ public class MainFrame extends JFrame {
                 int index = sourceTabbedPane.getSelectedIndex();
                 System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
                 System.out.println("new Tab is " + sourceTabbedPane.getComponentAt(index).getClass().getName());
+                ((ObserverPanel)sourceTabbedPane.getComponentAt(index)).update(null, null);
 
             }
         };
@@ -194,5 +190,13 @@ public class MainFrame extends JFrame {
         menuEdition.add(menuItemNewCategory);
 
         setJMenuBar(menuBar);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("Updating MainFrame");
+        System.out.println("Update redirected to " + tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
+        ObserverPanel activePanel = (ObserverPanel) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+        activePanel.update(null, null);
     }
 }

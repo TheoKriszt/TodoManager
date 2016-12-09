@@ -34,10 +34,19 @@ public class GeneralPanel extends ObserverPanel {
         ArrayList<Task> tasks = Task.allTasks();
         Task.sortByDueDate(tasks);
         for (Task t : tasks){
+            t.update();
+            TaskView tv = t.getView();
             System.out.println("Displaying task " + t.getName() + " [ " + t.findContainer().getName() + " ]");
-            add(t.getView());
+            try{
+                add(tv);
+            }catch (NullPointerException e){
+                System.err.println(e.getMessage());
+            }
+
+            //t.update();
         }
         repaint();
         revalidate();
+        System.out.println("Fin GeneralPanel::Update()");
     }
 }

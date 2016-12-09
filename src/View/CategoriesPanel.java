@@ -1,6 +1,7 @@
 package View;
 
 import Model.Category;
+import Model.Task;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -19,7 +20,12 @@ public class CategoriesPanel extends ObserverPanel{
         ArrayList<Category> cats = Category.getCategories();
         for (Category c : cats){
             try{
-                add(c.getView());
+                CategoryView cv = c.getView();
+                for (Task t : c.getTasks()){
+                    cv.getTasksPanel().add(t.getView());
+                }
+                add(cv);
+                cv.revalidate();
             }catch(NullPointerException e){
                 System.err.println("CatView not found");
             }
