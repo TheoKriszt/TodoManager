@@ -46,18 +46,17 @@ public class BilanPanel extends ObserverPanel {
         JDatePanelImpl startDatePanel = new JDatePanelImpl(startModel, p);
         JDatePanelImpl endDatePanel = new JDatePanelImpl(endModel, p);
 
-
-        Calendar startDate = (Calendar) startDatePanel.getModel().getValue();
+        DateTime startDate = (DateTime) startDatePanel.getModel().getValue();
+        DateTime endDate = (DateTime) startDatePanel.getModel().getValue();
 
         //Gestion de la convertion calendar => localDate a l'aide de JodaTime
-        TimeZone tz = startDate.getTimeZone();
+        /*TimeZone tz = startDate.getTimeZone();
         DateTimeZone jodaTz = DateTimeZone.forID(tz.getID());
-        DateTime startDateTime = new DateTime(startDate.getTimeInMillis(),jodaTz);
+        DateTime startDateTime = new DateTime(startDate.getTimeInMillis(),jodaTz);*/
 
-        Calendar endDate = (Calendar) startDatePanel.getModel().getValue();
-        tz = endDate.getTimeZone();
+        /*tz = endDate.getTimeZone();
         jodaTz = DateTimeZone.forID(tz.getID());
-        DateTime endDateTime = new DateTime(endDate.getTimeInMillis(),jodaTz);
+        DateTime endDateTime = new DateTime(endDate.getTimeInMillis(),jodaTz);*/
 
         JLabel periode = new JLabel("Saisir la période pour l'édition du bilan");
 
@@ -89,8 +88,8 @@ public class BilanPanel extends ObserverPanel {
 
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
                 dtf.withLocale(Locale.FRANCE);
-                LocalDate ldb = startDateTime.toLocalDate();
-                LocalDate ldf = endDateTime.toLocalDate();
+                LocalDate ldb = startDate.toLocalDate();
+                LocalDate ldf = endDate.toLocalDate();
 
                 JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
                 centerPan.add(containtBilan);
