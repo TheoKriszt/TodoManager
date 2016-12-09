@@ -14,11 +14,12 @@ public class Main {
         SaveFileManager sfm = SaveFileManager.O();
         sfm.setTodoManager(tm);
 
-        //sfm.readFromFile();
+        sfm.readFromFile();
 
 
         //TODO : jeu de test, à supprimer avant rendu prof
 
+        /*
         Category c1 = new Category("Aucune");
         Category c2 = new Category("Perso");
         Category c3 = new Category("Travail");
@@ -34,8 +35,6 @@ public class Main {
         c1.setView(cv1);
         c2.setView(cv2);
         c3.setView(cv3);
-
-        System.err.println("CatViews Setted");
 
         Task t1, t2, t3;
         t1 = new Task("Tache 1");
@@ -53,6 +52,7 @@ public class Main {
         t1.setView(tv1);
         t2.setView(tv2);
         t3.setView(tv3);
+        */
 
         Category.getAucune().notifyObservers(); //met à jour la vue
 

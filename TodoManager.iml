@@ -38,5 +38,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="joda-time-2.9" level="project" />
   </component>
 </module>

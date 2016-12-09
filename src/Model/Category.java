@@ -1,7 +1,10 @@
 package Model;
 
+import Controller.CategoryController;
+import Controller.TaskController;
 import View.CategoryView;
 import View.ObserverPanel;
+import View.TaskView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ public class Category extends Observable implements Serializable {
 
 
     public Category(String name) throws IllegalArgumentException{
+        System.out.println("new Category called !");
 
         if (name.isEmpty()){
             throw new IllegalArgumentException();
@@ -82,10 +86,6 @@ public class Category extends Observable implements Serializable {
         notifyObservers();
     }
 
-    public void archiveCompletedTask(Task t){
-        //Todo : retirer des categories et archiver la task
-    }
-
     public void renameCategory(String newName) throws UnsupportedOperationException {
         if (equals(getAucune())){
             throw new UnsupportedOperationException("Interdiction de renommer la Catégorie \""+getName()+"\"");
@@ -140,8 +140,31 @@ public class Category extends Observable implements Serializable {
         return categories;
     }
 
+    /**
+     * Appelé après la désérialisation du fichier de persistence
+     * Assure la création des Contrôleurs et vues associés aux modèles (de Tâches comme de Catégories) issus du fichier de persistence
+     * @param categories la liste des catégories extraite du fichier de persistence
+     */
     public static void setCategories(ArrayList<Category> categories) {
         Category.categories = categories;
+
+        for (Category c : categories){
+            for (Task t : c.getTasks()){
+                TaskController tc = new TaskController(t);
+                TaskView tv = new TaskView(tc);
+                t.setView(tv);
+                System.out.println("New Task " +t.getName() + " imported");
+                t.update();
+            }
+
+            CategoryController cc = new CategoryController(c);
+            CategoryView cv = new CategoryView(cc);
+            c.setView(cv);
+            c.update();
+            System.out.println("New Category " + c.getName() + " imported");
+        }
+
+        getAucune().update();
     }
 
     public ArrayList<Task> getTasks() {
@@ -185,10 +208,7 @@ public class Category extends Observable implements Serializable {
         }
     }
 
-    @Deprecated
-    public void eraseCategory(){
-        removeCategory(); //expatrier les éventuelles tâches sur Aucune
-        categories.remove(this);
+    public void update(){
         setChanged();
         notifyObservers();
     }

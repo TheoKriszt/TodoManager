@@ -219,6 +219,7 @@ public class Task extends Observable implements Serializable {
     public void update(){
         setChanged();
         notifyObservers();
+        findContainer().update();
     }
 
     /**

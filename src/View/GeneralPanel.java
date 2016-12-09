@@ -2,6 +2,7 @@ package View;
 
 import Model.Category;
 import Model.Task;
+import org.joda.time.DateTime;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class GeneralPanel extends ObserverPanel {
             System.out.println("Displaying task " + t.getName() + " [ " + t.findContainer().getName() + " ]");
             add(t.getView());
         }
+        repaint();
         revalidate();
     }
 }

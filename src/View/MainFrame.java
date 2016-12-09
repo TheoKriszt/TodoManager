@@ -54,7 +54,9 @@ public class MainFrame extends JFrame {
     }
 
     private void setListeners() {
+        //TODO : déplacer le code inline vers un controlleur plus propre
 
+        //Ajouter des garde-fous à la fermeture du programme : sauvegarder la todoList au préalable
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -74,7 +76,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        //menuItemNewTask, menuItemNewCategory
         menuItemNewCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,16 +100,35 @@ public class MainFrame extends JFrame {
                 }catch (IllegalArgumentException ex){
                     JOptionPane.showMessageDialog(null, "Erreur lors de la création de la catégorie: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
                 }
-
-
-                //t.setView(tv);
             }
         });
 
         menuItemNewTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Task t;
+                TaskController tc;
+                TaskView tv;
 
+                String s = (String)JOptionPane.showInputDialog(
+                        null,
+                        "Donner un nom à la nouvelle tâche",
+                        "Nouvelle tâche",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        null,
+                        "Nouvelle tâche");
+
+                try{
+                    t = new Task(s);
+                    tc = new TaskController(t);
+                    tv = new TaskView(tc);
+                    t.setView(tv);
+                    t.update();
+
+                }catch (IllegalArgumentException ex){
+                    JOptionPane.showMessageDialog(null, "Erreur lors de la création de la tâche: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -133,25 +153,25 @@ public class MainFrame extends JFrame {
         tabbedPane.addTab("Catégories", tabCategories);
         tabbedPane.addTab("Bilan", tabBilan);
 
-
         setContentPane(tabbedPane);
-
     }
 
     public ArrayList<ObserverPanel> getTabs(){
         ArrayList<ObserverPanel> tabs = new ArrayList<>();
+
         for (int i=0; i<tabbedPane.getTabCount(); i++){
-            //tabs.add((ObserverPanel) tabbedPane.getTabComponentAt(i));
             tabs.add((ObserverPanel) tabbedPane.getComponentAt(i));
         }
-        //tabs.add((ObserverPanel) tabbedPane.getComponentAt(1));
+
         return tabs;
     }
 
     private void buildMenu() {
         menuBar = new JMenuBar();
+
         menuFichier = new JMenu("Fichier");
         menuFichier.setMnemonic(KeyEvent.VK_F); //Touche d'accès rapide
+
         menuEdition = new JMenu("Edition");
         menuEdition.setMnemonic(KeyEvent.VK_E);
 
@@ -166,10 +186,6 @@ public class MainFrame extends JFrame {
         menuEdition.add(menuItemNewTask);
         menuEdition.add(menuItemNewCategory);
 
-        //ajouter plutot ici les menus ?
         setJMenuBar(menuBar);
-
-
-
     }
 }

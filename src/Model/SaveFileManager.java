@@ -36,63 +36,81 @@ public class SaveFileManager  {
         todoManager.setSaveFileManager(this);
     }
 
+    /**
+     * Initialise depuis le fichier de persistence la liste des catégories (et indirectement, leur tâches respectives)
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void readFromFile() throws IOException, ClassNotFoundException {
-        FileInputStream fint = null;
+        FileInputStream fint;
         try {
             fint = new FileInputStream("SaveFile.ser");
-        }catch (FileNotFoundException e){
+            System.err.println("Lu depuis le fichier");
 
-            readWhenFileDoesntExist();
-
-        }finally {
+        }catch (FileNotFoundException e){ //Le fichier de persistence n'existe pas
+            createSampleSaveFile(); //Forcer la création d'un fichier sample
+            System.err.println("Fichier créé de force");
             fint = new FileInputStream("SaveFile.ser");
         }
 
+
         ois = new ObjectInputStream(fint);
-        Category.setCategories(readCategories(ois));
+
+        ArrayList<Category> categories = (ArrayList < Category >) ois.readObject();
+
+        Category.setCategories(categories);
+
+
         if(ois != null){
             ois.close();
         }
     }
 
     // crée un fichier sérialisé avec les deux catégories par défault. Est appelé uniquement si le fichier sérialisé n'existe pas déjà.
-    public void readWhenFileDoesntExist() throws IOException {
+
+    /**
+     * Créé un fichier de persistence contenant les catégories demandées par défaut : Travail, Personnel et la catégorie fourre-tout "Aucune"
+     *
+     * @throws IOException
+     */
+    public void createSampleSaveFile() throws IOException {
         FileOutputStream fout = new FileOutputStream("SaveFile.ser");
         oos = new ObjectOutputStream(fout);
-        Category aucune = new Category("Aucune");
-        Category perso = new Category("Personnelle");
-        Category travail = new Category("Travail");
+
         ArrayList<Category> categories = new ArrayList<>();
+
+        Category aucune = new Category("Aucune");
+        Category perso = new Category("Personnel");
+        Category travail = new Category("Travail");
+
         categories.add(aucune);
         categories.add(perso);
         categories.add(travail);
-        //oos.writeObject(categories);
-        Category.setCategories(categories);
+
         saveToFile();
-        /*oos.writeObject(aucune);
-        oos.writeObject(perso);
-        oos.writeObject(travail);*/
+
         if(oos != null){
             oos.flush();
             oos.close();
         }
     }
 
+    /**
+     * Sauvegarde la liste des Catégories (et indirectement leur tâches respectives) dans le fichier de persistence "SaveFile.ser"
+     * @throws IOException
+     */
     public void saveToFile() throws IOException {
         FileOutputStream fout = new FileOutputStream("SaveFile.ser");
         oos = new ObjectOutputStream(fout);
-        writeCategories(Category.getCategories());
+        oos.writeObject(Category.getCategories());
+
         if(oos != null){
             oos.flush();
             oos.close();
         }
     }
 
-    public static ArrayList<Category> readCategories(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        return (ArrayList<Category>) ois.readObject();
-    }
 
-    public static void writeCategories(ArrayList<Category> categories) throws IOException {
-            oos.writeObject(categories);
-    }
+
+
 }
