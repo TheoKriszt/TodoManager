@@ -29,24 +29,19 @@ public class GeneralPanel extends ObserverPanel {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("GeneralPanel::update()");
         removeAll();
         ArrayList<Task> tasks = Task.allTasks();
         Task.sortByDueDate(tasks);
         for (Task t : tasks){
             t.update();
             TaskView tv = t.getView();
-            System.out.println("Displaying task " + t.getName() + " [ " + t.findContainer().getName() + " ]");
             try{
                 add(tv);
             }catch (NullPointerException e){
                 System.err.println(e.getMessage());
             }
-
-            //t.update();
         }
         repaint();
         revalidate();
-        System.out.println("Fin GeneralPanel::Update()");
     }
 }

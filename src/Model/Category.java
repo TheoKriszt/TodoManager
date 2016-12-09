@@ -41,10 +41,7 @@ public class Category extends Observable implements Serializable {
     }
 
     private void setObservers() {
-        deleteObservers();
-        ArrayList<ObserverPanel> obs = todoManager.getFrame().getTabs();
-
-        System.err.println("Adding observer mainframe to " + name);
+        deleteObservers(); // fais le ménage dans les observers éventuellement récupérés auparavant
         addObserver(todoManager.getFrame());
         setChanged();
 

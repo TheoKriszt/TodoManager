@@ -71,7 +71,6 @@ public class TaskController {
     }
 
     private void onMoveButtonPressed(){
-        System.err.println("Moving task " + task.getName());
         ArrayList<Category> cats = Category.getCategories();
         String[] possibilities = new String[cats.size()];
         for (int i=0; i<cats.size(); i++){
@@ -111,7 +110,6 @@ public class TaskController {
         if (n == 0){ //Suppression confirmée par l'utilisateur
             Category c = task.findContainer();
             task.eraseTask();
-            //task.update();
             c.update();
         }
 

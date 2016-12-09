@@ -214,7 +214,6 @@ public class Task extends Observable implements Serializable {
     public void update(){
         setChanged();
         notifyObservers();
-        System.out.println("Fin Task::update()");
     }
 
     /**

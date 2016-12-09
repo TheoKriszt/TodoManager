@@ -14,7 +14,6 @@ import java.util.Observer;
 public class CategoriesPanel extends ObserverPanel{
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("CategoriesPanel::update()");
         removeAll();
 
         ArrayList<Category> cats = Category.getCategories();

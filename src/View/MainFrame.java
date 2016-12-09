@@ -2,14 +2,11 @@ package View;
 
 import Controller.BilanPanelController;
 import Controller.CategoryController;
+import Controller.MainFrameController;
 import Controller.TaskController;
 import Model.Category;
 import Model.Task;
 import Model.TodoManager;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -18,7 +15,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
 
 /**
  * Created by Theo on 07/12/2016.
@@ -30,26 +26,24 @@ public class MainFrame extends JFrame implements Observer {
     private JMenuItem menuItemQuitter, menuItemNewTask, menuItemNewCategory;
     private JTabbedPane tabbedPane;
     private JComponent tabGeneral, tabCategories, tabBilan;
-    //private JPanel generalPanel, categoriesPanel, bilanPPanel;
-
-    private TodoManager todoManager;
 
 
-    public MainFrame(TodoManager tm){
+    public MainFrame(MainFrameController mfc){
         super("Todo List Manager");
         setLocationRelativeTo(null);
-        setSize(new Dimension(600, 500));
+        setSize(new Dimension(750, 600));
 
-        todoManager = tm;
-        tm.setFrame(this);
+        //todoManager = tm; //todo : move
+        //tm.setFrame(this);
 
         buildMenu();
         buildTabs();
-        setListeners();
+        mfc.setListeners(this);
 
         setVisible(true);
     }
 
+    @Deprecated
     private void setListeners() {
         //TODO : déplacer le code inline vers un controlleur plus propre
 
@@ -78,7 +72,7 @@ public class MainFrame extends JFrame implements Observer {
                 CategoryController cc;
                 CategoryView cv;
 
-                String s = (String)JOptionPane.showInputDialog(
+                String s = (String) JOptionPane.showInputDialog(
                         null,
                         "Donner un nom à la nouvelle catégorie",
                         "Nouvelle catégorie",
@@ -87,12 +81,12 @@ public class MainFrame extends JFrame implements Observer {
                         null,
                         "Nouvelle catégorie");
 
-                try{
+                try {
                     c = new Category(s);
                     cc = new CategoryController(c);
                     cv = new CategoryView(cc);
                     c.setView(cv);
-                }catch (IllegalArgumentException ex){
+                } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Erreur lors de la création de la catégorie: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -105,7 +99,7 @@ public class MainFrame extends JFrame implements Observer {
                 TaskController tc;
                 TaskView tv;
 
-                String s = (String)JOptionPane.showInputDialog(
+                String s = (String) JOptionPane.showInputDialog(
                         null,
                         "Donner un nom à la nouvelle tâche",
                         "Nouvelle tâche",
@@ -114,7 +108,7 @@ public class MainFrame extends JFrame implements Observer {
                         null,
                         "Nouvelle tâche");
 
-                try{
+                try {
                     t = new Task(s);
                     tc = new TaskController(t);
                     tv = new TaskView(tc);
@@ -123,7 +117,7 @@ public class MainFrame extends JFrame implements Observer {
                     //t.findContainer().update();
                     update(null, null);
 
-                }catch (IllegalArgumentException ex){
+                } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Erreur lors de la création de la tâche: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -142,13 +136,16 @@ public class MainFrame extends JFrame implements Observer {
         tabbedPane.addChangeListener(changeListener);
     }
 
+    /**
+     * Créé les onglets qui donneront les différents modes d'affichage de l'application
+     */
     private void buildTabs() {
         tabbedPane = new JTabbedPane();
-
         tabGeneral = new GeneralPanel ();
         tabCategories = new CategoriesPanel();
-        BilanPanelController bpc = new BilanPanelController();
         tabBilan = new BilanPanel();
+
+        BilanPanelController bpc = new BilanPanelController(); //todo : refactor sans singleton (dumb idea ?)
         bpc.setListener((BilanPanel) tabBilan);
 
         tabbedPane.addTab("Général", tabGeneral);
@@ -158,17 +155,9 @@ public class MainFrame extends JFrame implements Observer {
         setContentPane(tabbedPane);
     }
 
-    public ArrayList<ObserverPanel> getTabs(){
-        ArrayList<ObserverPanel> tabs = new ArrayList<>();
-
-        for (int i=0; i<tabbedPane.getTabCount(); i++){
-            tabs.add((ObserverPanel) tabbedPane.getComponentAt(i));
-        }
-        //tabs.add((ObserverPanel) tabbedPane.getComponentAt(1));
-
-        return tabs;
-    }
-
+    /**
+     * Créé l'arborescence des menus (Quiter, Nouvelle tâche, Nouvelle Cétagorie ...)
+     */
     private void buildMenu() {
         menuBar = new JMenuBar();
 
@@ -194,9 +183,23 @@ public class MainFrame extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("Updating MainFrame");
-        System.out.println("Update redirected to " + tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
         ObserverPanel activePanel = (ObserverPanel) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
         activePanel.update(null, null);
+    }
+
+    public JMenuItem getMenuItemQuitter() {
+        return menuItemQuitter;
+    }
+
+    public JMenuItem getMenuItemNewTask() {
+        return menuItemNewTask;
+    }
+
+    public JMenuItem getMenuItemNewCategory() {
+        return menuItemNewCategory;
+    }
+
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
     }
 }

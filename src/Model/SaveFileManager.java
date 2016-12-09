@@ -48,20 +48,19 @@ public class SaveFileManager  {
         FileInputStream fint;
         try {
             fint = new FileInputStream("SaveFile.ser");
-            System.err.println("Lu depuis le fichier");
 
         }catch (FileNotFoundException e){ //Le fichier de persistence n'existe pas
             createSampleSaveFile(); //Forcer la création d'un fichier sample
-            System.err.println("Fichier créé de force");
+            System.err.println("Fichier exemple chargé");
             fint = new FileInputStream("SaveFile.ser");
         }
-
 
         ois = new ObjectInputStream(fint);
 
         ArrayList<Category> categories = (ArrayList < Category >) ois.readObject();
 
         Category.setCategories(categories);
+
         ((JTabbedPane)todoManager.getFrame().getContentPane()).getComponentAt(0).revalidate();
         ((ObserverPanel)((JTabbedPane)todoManager.getFrame().getContentPane()).getComponentAt(0)).update(null, null);
 
@@ -70,8 +69,6 @@ public class SaveFileManager  {
             ois.close();
         }
     }
-
-    // crée un fichier sérialisé avec les deux catégories par défault. Est appelé uniquement si le fichier sérialisé n'existe pas déjà.
 
     /**
      * Créé un fichier de persistence contenant les catégories demandées par défaut : Travail, Personnel et la catégorie fourre-tout "Aucune"

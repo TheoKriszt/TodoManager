@@ -86,7 +86,6 @@ public class TaskView extends ObserverPanel{
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("TaskView::Update("+o.toString()+")");
         if (o instanceof Task){
             Task t = (Task)o;
             categoryLabel.setText("["+t.findContainer().getName()+"]");

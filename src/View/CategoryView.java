@@ -48,8 +48,6 @@ public class CategoryView extends ObserverPanel{
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("CategoryView::update()");
-
         nameLabel.setText(((Category)o).getName());
         tasksPanel.removeAll(); //wipe old content
         ArrayList<Task> tasks = ((Category)o).getTasks();
