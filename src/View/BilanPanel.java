@@ -4,6 +4,7 @@ package View;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.joda.time.*;
 
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
@@ -12,7 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -43,15 +43,23 @@ public class BilanPanel extends ObserverPanel {
         p.put("text.year", "Year");
         UtilDateModel startModel = new UtilDateModel();
         UtilDateModel endModel = new UtilDateModel();
-
         JDatePanelImpl startDatePanel = new JDatePanelImpl(startModel, p);
         JDatePanelImpl endDatePanel = new JDatePanelImpl(endModel, p);
-        centerPan.add(startDatePanel);
-        centerPan.add(endDatePanel);
+
+
         Calendar startDate = (Calendar) startDatePanel.getModel().getValue();
+
+        //Gestion de la convertion calendar => localDate a l'aide de JodaTime
+        TimeZone tz = startDate.getTimeZone();
+        DateTimeZone jodaTz = DateTimeZone.forID(tz.getID());
+        DateTime startDateTime = new DateTime(startDate.getTimeInMillis(),jodaTz);
+
         Calendar endDate = (Calendar) startDatePanel.getModel().getValue();
+        tz = endDate.getTimeZone();
+        jodaTz = DateTimeZone.forID(tz.getID());
+        DateTime endDateTime = new DateTime(endDate.getTimeInMillis(),jodaTz);
 
-
+        LocalDate ld = new LocalDate();
 
 
 
@@ -61,13 +69,13 @@ public class BilanPanel extends ObserverPanel {
         JTextField dateDebut = new JTextField();
         JPanel jpDebut = new JPanel(new BorderLayout());
         jpDebut.add(db, BorderLayout.NORTH);
-        jpDebut.add(dateDebut, BorderLayout.SOUTH);
+        jpDebut.add(startDatePanel, BorderLayout.SOUTH);
 
         JLabel df = new JLabel("Fin de la période :");
         JTextField dateFin = new JTextField();
         JPanel jpFin = new JPanel(new BorderLayout());
         jpFin.add(df,BorderLayout.NORTH);
-        jpFin.add(dateFin,BorderLayout.SOUTH);
+        jpFin.add(endDatePanel,BorderLayout.SOUTH);
 
         //Todo : gérer le listener
         JButton bilan = new JButton("Afficher le bilan");
@@ -85,7 +93,7 @@ public class BilanPanel extends ObserverPanel {
 
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MM yyyy");
                 dtf.withLocale(Locale.FRANCE);
-                LocalDate ldb = LocalDate.parse(dateDebut.getText(),dtf);
+                LocalDate ldb = startDateTime.toLocalDate();
                 LocalDate ldf = LocalDate.parse(dateFin.getText(),dtf);
 
                 JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
