@@ -2,11 +2,9 @@ package View;
 
 import Model.Bilan;
 import Model.Task;
-
 import javax.swing.*;
 import java.awt.*;
 import org.joda.time.*;
-import java.util.Calendar;
 
 /**
  * Created by Antho on 07/12/2016.
@@ -35,6 +33,9 @@ public class ContaintBilanPanel extends JPanel {
         bilan.setEnd(this.dateFin);
         bilan.loadTasks();
 
+        System.out.println("bilan pour :" + this.dateDebut + " à " + this.dateFin);
+        System.out.println("Tâches non réalisé et en retard : " + bilan.getPercentageTasksNotReleasedAndLate() + " %");
+
         name = new JLabel("Bilan",JLabel.CENTER);
         taskNotReleasedAndLate = new JLabel("Tâches non réalisé et en retard : " + bilan.getPercentageTasksNotReleasedAndLate() + " %",JLabel.CENTER);
         taskReleasedInTime = new JLabel("Tâches réalisé dans les temps : " + bilan.getPercentageTasksReleasedInTime() + " %",JLabel.CENTER);
@@ -46,8 +47,10 @@ public class ContaintBilanPanel extends JPanel {
 
         westPanel.add(new JLabel("Tâches à réaliser sur la période : "));
 
+        System.out.println("avant" + bilan.getTasks().size());
         for(Task t : bilan.getTasks()){
             nbLineOfGl++;
+            System.out.println(t.toString());
             westPanel.add(new JLabel(t.toString()));
             gl.setRows(nbLineOfGl);
             westPanel.setLayout(gl);

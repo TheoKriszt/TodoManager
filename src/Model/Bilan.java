@@ -28,6 +28,7 @@ public class Bilan {
 
     public void loadTasks(){
         ArrayList<Category> categories = Category.getCategories();
+        tasks = new ArrayList<Task>();
         for (Category c : categories){
             for (Task t : c.getTasks()){
                 if (t.isBetween(start, end)){
@@ -44,6 +45,8 @@ public class Bilan {
                             tasksNotReleasedAndLate++;
                         }
                     }
+                }else{
+                    System.out.println(t + " n'est pas compris dedans");
                 }
             }
         }

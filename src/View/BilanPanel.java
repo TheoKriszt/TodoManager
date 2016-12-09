@@ -23,76 +23,35 @@ public class BilanPanel extends ObserverPanel {
 
     private JPanel northPanel = new JPanel(new BorderLayout(0,25));
     private JPanel centerPan = new JPanel();
+    private JButton bilan;
+    private JDatePanelImpl startDatePanel,endDatePanel;
 
 
     public BilanPanel(){
         this.setLayout(new BorderLayout(0,100));
 
-        /* fonctionne avec JFormattedTextField mais problème avec le parse
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        DateFormatter dateFormatter=new DateFormatter(sdf);
-        DefaultFormatterFactory dateFormatterFactory =new DefaultFormatterFactory(dateFormatter,new DateFormatter(),dateFormatter);
-        */
-
-        /**
-         * TODO : insérer les datePickers comme il faut
-         */
         Properties p = new Properties();
         p.put("text.today", "Today"); //Date par défaut du datepicker : aujourd'hui
         p.put("text.month", "Month");
         p.put("text.year", "Year");
         UtilDateModel startModel = new UtilDateModel();
         UtilDateModel endModel = new UtilDateModel();
-        JDatePanelImpl startDatePanel = new JDatePanelImpl(startModel, p);
-        JDatePanelImpl endDatePanel = new JDatePanelImpl(endModel, p);
-
-        LocalDateTime startDate = (LocalDateTime) startDatePanel.getModel().getValue();
-        LocalDateTime endDate = (LocalDateTime) startDatePanel.getModel().getValue();
-
-        //Gestion de la convertion calendar => localDate a l'aide de JodaTime
-        /*TimeZone tz = startDate.getTimeZone();
-        DateTimeZone jodaTz = DateTimeZone.forID(tz.getID());
-        DateTime startDateTime = new DateTime(startDate.getTimeInMillis(),jodaTz);*/
-
-        /*tz = endDate.getTimeZone();
-        jodaTz = DateTimeZone.forID(tz.getID());
-        DateTime endDateTime = new DateTime(endDate.getTimeInMillis(),jodaTz);*/
+        startDatePanel = new JDatePanelImpl(startModel, p);
+        endDatePanel = new JDatePanelImpl(endModel, p);
 
         JLabel periode = new JLabel("Saisir la période pour l'édition du bilan");
 
         JLabel db = new JLabel("Début de la période :");
-        JTextField dateDebut = new JTextField();
         JPanel jpDebut = new JPanel(new BorderLayout());
         jpDebut.add(db, BorderLayout.NORTH);
         jpDebut.add(startDatePanel, BorderLayout.SOUTH);
 
         JLabel df = new JLabel("Fin de la période :");
-        JTextField dateFin = new JTextField();
         JPanel jpFin = new JPanel(new BorderLayout());
         jpFin.add(df,BorderLayout.NORTH);
         jpFin.add(endDatePanel,BorderLayout.SOUTH);
 
-        //Todo : gérer le listener
-        JButton bilan = new JButton("Afficher le bilan");
-        bilan.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                    /*Date d = sdf.parse(dateDebut.getText());
-                    LocalDate ldb = LocalDate.from(Instant.ofEpochMilli(d.getTime()));
-                    d = sdf.parse(dateFin.getText());
-                    LocalDate ldf = LocalDate.from(Instant.ofEpochMilli(d.getTime()));*/
-                centerPan.removeAll();
-                //Todo : removeAll ineffectif (déjà résolu ?)
-                //Todo : Utiliser un formatter si besoin, adapter l'architecture au datePicker
-
-                LocalDate ldb = new LocalDate(startDatePanel.getModel().getYear(), startDatePanel.getModel().getMonth(), startDatePanel.getModel().getDay());
-                LocalDate ldf = new LocalDate(endDatePanel.getModel().getYear(), endDatePanel.getModel().getMonth(), endDatePanel.getModel().getDay());
-
-                JPanel containtBilan = new ContaintBilanPanel(ldb,ldf);
-                centerPan.add(containtBilan);
-                centerPan.validate();
-
-            }
-        });
+        bilan = new JButton("Afficher le bilan");
         JPanel jpButton = new JPanel();
         jpButton.add(bilan);
 
@@ -110,5 +69,21 @@ public class BilanPanel extends ObserverPanel {
     public void update(Observable o, Object arg) {
         System.out.println("BilanPanel::update()");
 
+    }
+
+    public JButton getBilanButton(){
+        return bilan;
+    }
+
+    public JPanel getCenterPan() {
+        return centerPan;
+    }
+
+    public JDatePanelImpl getStartDatePanel() {
+        return startDatePanel;
+    }
+
+    public JDatePanelImpl getEndDatePanel() {
+        return endDatePanel;
     }
 }

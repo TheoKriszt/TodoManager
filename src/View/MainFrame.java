@@ -1,5 +1,6 @@
 package View;
 
+import Controller.BilanPanelController;
 import Controller.CategoryController;
 import Controller.TaskController;
 import Model.Category;
@@ -147,7 +148,9 @@ public class MainFrame extends JFrame {
 
         tabGeneral = new GeneralPanel ();
         tabCategories = new CategoriesPanel();
+        BilanPanelController bpc = new BilanPanelController();
         tabBilan = new BilanPanel();
+        bpc.setListener((BilanPanel) tabBilan);
 
         tabbedPane.addTab("Général", tabGeneral);
         tabbedPane.addTab("Catégories", tabCategories);

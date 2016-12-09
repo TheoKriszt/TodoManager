@@ -127,7 +127,7 @@ public class Task extends Observable implements Serializable {
     }
 
     public boolean isBetween(LocalDate start,LocalDate end){
-
+        System.out.println(start + "---" + end + " echeance : " + echeance);
         if(echeance.isEqual(start) || echeance.isEqual(end)){
             return true;
         }
