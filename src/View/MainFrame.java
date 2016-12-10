@@ -51,7 +51,7 @@ public class MainFrame extends JFrame implements Observer {
 
         tabbedPane.addTab("Général", tabGeneral);
         tabbedPane.addTab("Intermediaire", tabIntermediaire);
-        tabbedPane.addTab("Intermediaire", tabIntermediaire);
+        tabbedPane.addTab("Catégories", tabCategories);
         tabbedPane.addTab("Top 8", tabTop8);
         tabbedPane.addTab("Bilan", tabBilan);
 
