@@ -21,7 +21,9 @@ public class CategoriesPanel extends ObserverPanel{
             try{
                 CategoryView cv = c.getView();
                 cv.getTasksPanel().removeAll();
-                for (Task t : c.getTasks()){
+                ArrayList<Task> tasks = c.getTasks();
+                Task.sortByIntermediateDueDate(tasks);
+                for (Task t : tasks){
                     if (t.getDoneDate() == null){
                         cv.getTasksPanel().add(t.getView());
                     }
