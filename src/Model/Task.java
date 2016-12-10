@@ -86,6 +86,9 @@ public class Task extends Observable implements Serializable {
             throw new IllegalArgumentException("L'avancement doit être compris entre 0 et 100");
             //Todo : ajouter tests ad hoc
         }
+        if (this.progress > progress){
+            throw new IllegalArgumentException("L'avancement ne peut évoluer que de façon croissante");
+        }
 
         if(progress == 100){
             doneDate = LocalDate.now();
