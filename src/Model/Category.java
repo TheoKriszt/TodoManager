@@ -24,8 +24,6 @@ public class Category extends Observable implements Serializable {
 
 
     public Category(String name) throws IllegalArgumentException{
-        System.out.println("new Category called !");
-
         if (name.isEmpty()){
             throw new IllegalArgumentException();
         }

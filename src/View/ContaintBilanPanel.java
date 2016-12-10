@@ -34,20 +34,18 @@ public class ContaintBilanPanel extends JPanel {
         System.out.println("Tâches non réalisé et en retard : " + b.getPercentageTasksNotReleasedAndLate() + " %");
 
         name = new JLabel("Bilan",JLabel.CENTER);
-        taskNotReleasedAndLate = new JLabel("Tâches non réalisé et en retard : " + b.getPercentageTasksNotReleasedAndLate() + " %",JLabel.CENTER);
-        taskReleasedInTime = new JLabel("Tâches réalisé dans les temps : " + b.getPercentageTasksReleasedInTime() + " %",JLabel.CENTER);
-        taskReleasedLate = new JLabel("Tâches réalisé en retard : " + b.getPercentageTasksReleasedLate() + " %",JLabel.CENTER);
+        taskNotReleasedAndLate = new JLabel("Tâches non réalisées et en retard : " + b.getPercentageTasksNotReleasedAndLate() + " %",JLabel.CENTER);
+        taskReleasedInTime = new JLabel("Tâches réalisées dans les temps : " + b.getPercentageTasksReleasedInTime() + " %",JLabel.CENTER);
+        taskReleasedLate = new JLabel("Tâches réalisées en retard : " + b.getPercentageTasksReleasedLate() + " %",JLabel.CENTER);
 
         eastPanel.add(taskNotReleasedAndLate);
         eastPanel.add(taskReleasedLate);
         eastPanel.add(taskReleasedInTime);
 
-        westPanel.add(new JLabel("Tâches à réaliser sur la période : "));
+        westPanel.add(new JLabel("Tâches à échéances comprises dans la période : "));
 
-        System.out.println("avant" + b.getTasks().size());
         for(Task t : b.getTasks()){
             nbLineOfGl++;
-            System.out.println(t.toString());
             westPanel.add(new JLabel(t.toString()));
             gl.setRows(nbLineOfGl);
             westPanel.setLayout(gl);

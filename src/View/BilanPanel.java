@@ -77,11 +77,12 @@ public class BilanPanel extends ObserverPanel {
         if (o instanceof Bilan){
             Bilan b = (Bilan)o;
             System.out.println("Update sur vue, avec " + b.getStart() + " --> " + b.getEnd());
+            centerPanel.removeAll();
             ContaintBilanPanel containtBilan = new ContaintBilanPanel(b);
+
             centerPanel.add(containtBilan);
-            centerPanel.validate();
-        }else if( o != null){
-            System.out.println("Update called from a " + o.getClass().getSimpleName().toString());
+            centerPanel.revalidate();
+            centerPanel.repaint();
         }
 
 

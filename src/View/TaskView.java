@@ -5,6 +5,7 @@ import Model.LongTask;
 import Model.Task;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -48,9 +49,8 @@ public class TaskView extends ObserverPanel{
         setLayout(new BorderLayout(5, 5));
         setMinimumSize(new Dimension(200, 300));
 
-        taskController = tc;
 
-        setBorder(BorderFactory.createLineBorder(Color.black));
+        taskController = tc;
 
         nameLabel = new JLabel("",JLabel.CENTER);
         categoryLabel = new JLabel("",JLabel.CENTER);
@@ -67,6 +67,7 @@ public class TaskView extends ObserverPanel{
         titlesPanel.setLayout(new BoxLayout(titlesPanel, BoxLayout.Y_AXIS));
 
 
+
         titlesPanel.add(nameLabel);
         titlesPanel.add(categoryLabel);
         add(endDateLabel, BorderLayout.EAST);
@@ -76,6 +77,8 @@ public class TaskView extends ObserverPanel{
         controlPanel.add(editButton);
         controlPanel.add(moveButton);
         controlPanel.add(removeButton);
+        //controlPanel.setBackground(new Color(255, 0, 0, 128));
+        //setBackground(new Color(255, 0, 0, 128));
 
         add(controlPanel, BorderLayout.SOUTH);
         add(titlesPanel, BorderLayout.NORTH);
@@ -83,6 +86,8 @@ public class TaskView extends ObserverPanel{
         taskController.setListeners(this);
 
     }
+
+
 
     @Override
     public void update(Observable o, Object arg) {
@@ -96,8 +101,25 @@ public class TaskView extends ObserverPanel{
             if (t instanceof LongTask){
                 startDateLabel.setText(((LongTask) t).getStartDate().toString());
             }
+
+            setBorderStyle(t);
         }
         revalidate();
 
+    }
+
+    /**
+     * Met à jour la bordure de la TaskView
+     * La bordure prend un marquage rouge si la tâche est en retard
+     * @param t la tâche modèle
+     */
+    private void setBorderStyle(Task t) {
+        Border border;
+        if (t.isLate()){
+            border = BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(255, 0, 0, 192));
+        }else {
+            border = BorderFactory.createLineBorder(Color.black);
+        }
+        setBorder(border);
     }
 }

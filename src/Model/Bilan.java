@@ -4,7 +4,6 @@ import View.BilanPanel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.joda.time.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Observable;
@@ -108,8 +107,19 @@ public class Bilan extends Observable{
 
     public void update(JDatePanelImpl start, JDatePanelImpl end) {
         LocalDate startDate, endDate;
-        startDate = LocalDate.fromDateFields((Date) start.getModel().getValue());
-        endDate = LocalDate.fromDateFields((Date) end.getModel().getValue());
+
+        Date startSourceDate = (Date) start.getModel().getValue();
+        Date endSourceDate = (Date) end.getModel().getValue();
+
+        if (startSourceDate == null){
+            startSourceDate = new Date();
+        }
+        if (endSourceDate == null){
+            endSourceDate = new Date();
+        }
+
+        startDate = LocalDate.fromDateFields(startSourceDate);
+        endDate = LocalDate.fromDateFields(endSourceDate);
 
         this.start = startDate;
         this.end = endDate;
