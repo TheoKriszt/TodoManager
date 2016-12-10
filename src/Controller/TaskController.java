@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Category;
 import Model.Task;
+import View.TaskPropertiesDialogPanel;
 import View.TaskView;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -64,9 +65,15 @@ public class TaskController {
     // - Confirmer la suppression
     // Les popups peuvent afficher des messages d'erreur ? Déléguer à d'autres popups ?
 
-    private void onEditButtonPressed() throws NotImplementedException {
+    private void onEditButtonPressed() {
 
-        throw new NotImplementedException();
+        TaskPropertiesController tpc = new TaskPropertiesController(task);
+        TaskPropertiesDialogPanel tpdp = new TaskPropertiesDialogPanel();
+
+        tpc.setListeners(tpdp);
+
+        tpdp.loadFrom(task);
+        tpdp.setVisible(true);
 
     }
 

@@ -15,16 +15,7 @@ import java.util.Observer;
 public class GeneralPanel extends ObserverPanel {
 
     public GeneralPanel(){
-        /*
-        Category none = Category.getAucune();
-        System.out.println(Category.getCategories().size() + " categories found");
-        System.out.println(none.getTasks().size() + " tasks in noneCat");
-        System.out.println("First name found" + none.getTasks().get(0).getName());
-        for (Task t : Task.allTasks()){
-            System.out.println("Inserting view from " + t.getName());
-            add(t.getView());
-        }
-        */
+
     }
 
     @Override

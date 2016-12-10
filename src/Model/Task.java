@@ -44,6 +44,10 @@ public class Task extends Observable implements Serializable {
     }
 
     public void setName(String name) throws UnsupportedOperationException, IllegalArgumentException {
+        if (this.name.equals(name) && this != null){
+            //return; //Pas de changement, inutile de poursuivre
+        }
+
         if (doneDate != null){
             throw new UnsupportedOperationException("Impossible de renommer une tâche après sa complétion");
         }
@@ -66,7 +70,7 @@ public class Task extends Observable implements Serializable {
     }
 
     public void setEcheance(LocalDate ld) throws IllegalArgumentException{
-        if (!ld.isAfter(LocalDate.now(DateTimeZone.UTC))){
+        if (ld.isBefore(LocalDate.now(DateTimeZone.UTC))){
             throw new IllegalArgumentException("Une tâche ne peut être repoussée que dans le futur");
         }
         echeance = ld;

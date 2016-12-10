@@ -3,10 +3,7 @@ package Controller;
 import Model.Category;
 import Model.Task;
 import Model.TodoManager;
-import View.CategoryView;
-import View.MainFrame;
-import View.ObserverPanel;
-import View.TaskView;
+import View.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -77,10 +74,16 @@ public class MainFrameController {
         mf.getMenuItemNewTask().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Task t;
-                TaskController tc;
-                TaskView tv;
+                Task t = null;
+                TaskPropertiesController taskPropertiesController = new TaskPropertiesController(null);
+                TaskPropertiesDialogPanel tpdp = new TaskPropertiesDialogPanel();
+                taskPropertiesController.setListeners(tpdp);
 
+                tpdp.loadFrom(t);
+                tpdp.setVisible(true);
+
+
+                /*
                 String s = (String) JOptionPane.showInputDialog(
                         null,
                         "Donner un nom à la nouvelle tâche",
@@ -90,16 +93,18 @@ public class MainFrameController {
                         null,
                         "Nouvelle tâche");
 
+                /*
                 try {
                     t = new Task(s);
                     tc = new TaskController(t);
                     tv = new TaskView(tc);
                     t.setView(tv);
-                    mf.update(null, null); //todo : qu'est-ce qui oblige les onglets à reste des Observers ?
+                    mf.update(null, null);
 
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Erreur lors de la création de la tâche: " + ex.getMessage(), "Erreur de création", JOptionPane.ERROR_MESSAGE);
                 }
+                */
             }
         });
 
@@ -107,6 +112,7 @@ public class MainFrameController {
             public void stateChanged(ChangeEvent changeEvent) {
                 JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
                 int index = sourceTabbedPane.getSelectedIndex();
+                System.out.println("Calling global update");
                 ((ObserverPanel)sourceTabbedPane.getComponentAt(index)).update(null, null);
 
             }

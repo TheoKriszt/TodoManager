@@ -55,7 +55,6 @@ public class CategoryView extends ObserverPanel{
         for (Task t : tasks){
             t.update();
             tasksPanel.add(t.getView());
-
         }
 
         revalidate();

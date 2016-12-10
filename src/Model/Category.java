@@ -40,9 +40,8 @@ public class Category extends Observable implements Serializable {
 
     private void setObservers() {
         deleteObservers(); // fais le ménage dans les observers éventuellement récupérés auparavant
-        addObserver(todoManager.getFrame());
+        addObserver(todoManager.getFrame()); //les màj seront transmis et dirigés correctement depuis la fenêtre principale
         setChanged();
-
     }
 
     public static void setTodoManager(TodoManager todoManager) {

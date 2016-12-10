@@ -33,13 +33,6 @@ public class BilanController {
         JButton bilan = bp.getBilanButton();
         JDatePanelImpl startModel = bp.getStartDatePicker();
         JDatePanelImpl endModel = bp.getEndDatePicker();
-
-
-
-//        start = new LocalDate(startModel.getModel().getYear(), startModel.getModel().getMonth(), startModel.getModel().getDay());
-//        end = new LocalDate(endModel.getModel().getYear(), endModel.getModel().getMonth(), endModel.getModel().getDay());
-
-
         bilan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

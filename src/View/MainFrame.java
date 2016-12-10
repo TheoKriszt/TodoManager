@@ -82,6 +82,7 @@ public class MainFrame extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("Sending main update");
         ObserverPanel activePanel = (ObserverPanel) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
         activePanel.update(null, null);
     }

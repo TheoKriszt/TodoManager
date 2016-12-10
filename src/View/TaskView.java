@@ -77,8 +77,6 @@ public class TaskView extends ObserverPanel{
         controlPanel.add(editButton);
         controlPanel.add(moveButton);
         controlPanel.add(removeButton);
-        //controlPanel.setBackground(new Color(255, 0, 0, 128));
-        //setBackground(new Color(255, 0, 0, 128));
 
         add(controlPanel, BorderLayout.SOUTH);
         add(titlesPanel, BorderLayout.NORTH);
