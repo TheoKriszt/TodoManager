@@ -56,9 +56,17 @@ public class TaskPropertiesController {
      *
      */
     private void writeToTask() {
+        JComponent progressContainer = taskPropertiesDialogPanel.getProgress();
         String name = taskPropertiesDialogPanel.getNameField().getText(),
                 descriptif = taskPropertiesDialogPanel.getDescriptifArea().getText();
-        int progress = (int) taskPropertiesDialogPanel.getProgressSpinner().getValue();
+        int progress;
+        if (progressContainer instanceof JSpinner){
+            System.out.println("from JSpinner : " + (int) ((JSpinner)progressContainer).getValue());
+            progress = (int) ((JSpinner)progressContainer).getValue();
+        }else {
+            System.out.println("From checkBox : " + (((JCheckBox)progressContainer).isSelected()? 100 : 0));
+            progress = ((JCheckBox)progressContainer).isSelected()? 100 : 0; //Tâche courte : 0 ou 100%
+        }
         Date startSourceDate = (Date) taskPropertiesDialogPanel.getStartDatePicker().getModel().getValue();
         Date endSourceDate = (Date) taskPropertiesDialogPanel.getEndDatePicker().getModel().getValue();
 
@@ -73,6 +81,7 @@ public class TaskPropertiesController {
                 }
 
                 task.setContenu(descriptif);
+                System.out.println("Setting progress to " + progress);
                 task.setProgress(progress);
 
                 task.setEcheance( LocalDate.fromDateFields(endSourceDate) );
@@ -85,7 +94,7 @@ public class TaskPropertiesController {
             }
             task.update();
             task.findContainer().update();
-        }else{ //la tâche n'existait pas encore, on a demandé à la créer
+        }else{ //la tâche n'existait pas encore, on a donc demandé à la créer
 
             try{
                 if (startSourceDate != null){

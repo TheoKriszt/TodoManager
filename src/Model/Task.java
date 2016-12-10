@@ -91,7 +91,7 @@ public class Task extends Observable implements Serializable {
             doneDate = LocalDate.now();
         }
         this.progress = progress;
-        //Todo : remove Task de la category : envoyer un notify (a la fin)
+
     }
 
 

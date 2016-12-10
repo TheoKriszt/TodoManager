@@ -2,14 +2,11 @@ package View;
 
 import Model.LongTask;
 import Model.Task;
-import com.sun.javafx.image.BytePixelSetter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Properties;
 
 /**
@@ -20,7 +17,7 @@ public class TaskPropertiesDialogPanel extends JFrame{
     private JPanel content;
     private JTextField nameField;
     private JCheckBox completedCheckBox;
-    private JSpinner progressSpinner;
+    private JComponent progressContainer;
     private JTextArea descriptifArea;
     private JLabel nameLabel, progressLabel, descriptifLabel, startDateLabel, endDateLabel;
     private JButton yesButton, noButton;
@@ -51,8 +48,8 @@ public class TaskPropertiesDialogPanel extends JFrame{
         return completedCheckBox;
     }
 
-    public JSpinner getProgressSpinner() {
-        return progressSpinner;
+    public JComponent getProgress() {
+        return progressContainer;
     }
 
     public JTextArea getDescriptifArea() {
@@ -96,7 +93,7 @@ public class TaskPropertiesDialogPanel extends JFrame{
 
         nameLine.add(nameField);
 
-        progressSpinner = new JSpinner(
+        progressContainer = new JSpinner(
                 new SpinnerNumberModel(
                         0,   //initial value
                         0,   //min
@@ -104,7 +101,7 @@ public class TaskPropertiesDialogPanel extends JFrame{
                         1)  //step
         );
 
-        progressLine.add(progressSpinner);
+        progressLine.add(progressContainer);
 
         descriptifArea = new JTextArea(10, 30);
         descriptifLine.add(descriptifArea);
@@ -146,9 +143,15 @@ public class TaskPropertiesDialogPanel extends JFrame{
 
         if (t != null){ //Si la tâche est déjà initialisée : on ne fait que la modifier
             nameField.setText(t.getName());
-            progressSpinner.setValue(t.getProgress());
             descriptifArea.setText(t.getContenu());
-            if (!(t instanceof LongTask)) datePickersLine.remove(startDatePicker);
+            if (!(t instanceof LongTask)){ //Si ce n'est qu'une tâche simple : virer le datePicker de début, le selecteur de progress
+                datePickersLine.remove(startDatePicker);
+                progressLine.remove(progressContainer);
+                progressContainer = new JCheckBox("(Terminée)", (t.getProgress()==100));
+                progressLine.add(progressContainer);
+            }else {
+                ((JSpinner) progressContainer).setValue(t.getProgress());
+            }
 
         }else { // la tâche n'existe pas encore : il va faloir la créer
 
