@@ -21,7 +21,10 @@ public class CategoriesPanel extends ObserverPanel{
             try{
                 CategoryView cv = c.getView();
                 for (Task t : c.getTasks()){
-                    cv.getTasksPanel().add(t.getView());
+                    if (t.getDoneDate() == null){
+                        cv.getTasksPanel().add(t.getView());
+                    }
+
                 }
                 add(cv);
                 cv.revalidate();

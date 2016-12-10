@@ -27,7 +27,6 @@ public class LongTask extends Task {
     }
 
     public void setStartDate(LocalDate startDate) {
-        startDate.isAfter(echeance);
         if (startDate.isAfter(echeance)){
             throw new IllegalArgumentException("La date de début ne peut être antérieure à l'échéance");
         }

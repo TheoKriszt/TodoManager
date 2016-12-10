@@ -151,7 +151,8 @@ public class Task extends Observable implements Serializable {
     }
 
     public String toString(){
-        return "["+echeance+"] : " + name;
+        String ret = echeance + " "  + name + "(" + progress + "%) ===> " + findContainer().getName() + " done the " + doneDate;
+        return ret;
     }
 
     /**

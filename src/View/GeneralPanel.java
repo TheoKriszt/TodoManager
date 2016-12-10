@@ -24,13 +24,16 @@ public class GeneralPanel extends ObserverPanel {
         ArrayList<Task> tasks = Task.allTasks();
         Task.sortByDueDate(tasks);
         for (Task t : tasks){
-            t.update();
-            TaskView tv = t.getView();
-            try{
-                add(tv);
-            }catch (NullPointerException e){
-                System.err.println(e.getMessage());
+            if (t.getDoneDate() == null){
+                t.update();
+                TaskView tv = t.getView();
+                try{
+                    add(tv);
+                }catch (NullPointerException e){
+                    System.err.println(e.getMessage());
+                }
             }
+
         }
         repaint();
         revalidate();

@@ -53,8 +53,11 @@ public class CategoryView extends ObserverPanel{
         ArrayList<Task> tasks = ((Category)o).getTasks();
         Task.sortByDueDate(tasks);
         for (Task t : tasks){
-            t.update();
-            tasksPanel.add(t.getView());
+            if (t.getDoneDate() == null){
+                t.update();
+                tasksPanel.add(t.getView());
+            }
+
         }
 
         revalidate();

@@ -7,6 +7,7 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.Properties;
 
 /**
@@ -149,9 +150,15 @@ public class TaskPropertiesDialogPanel extends JFrame{
                 progressLine.remove(progressContainer);
                 progressContainer = new JCheckBox("(Terminée)", (t.getProgress()==100));
                 progressLine.add(progressContainer);
-            }else {
+            }else { //C'est une tache longue
                 ((JSpinner) progressContainer).setValue(t.getProgress());
+
+                org.joda.time.LocalDate startDate = ((LongTask) t).getStartDate();
+                startDatePicker.getModel().setDate(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth());
             }
+
+            org.joda.time.LocalDate endDate = t.getEcheance();
+            endDatePicker.getModel().setDate(endDate.getYear(), endDate.getMonthOfYear(), endDate.getDayOfMonth());
 
         }else { // la tâche n'existe pas encore : il va faloir la créer
 
