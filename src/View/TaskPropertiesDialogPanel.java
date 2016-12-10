@@ -11,7 +11,9 @@ import java.time.LocalDate;
 import java.util.Properties;
 
 /**
- * Created by Theo on 10/12/2016.
+ * Affichage du contenu des JOptionPane de modification des tâches
+ * Elle sert à afficher les détails d'une tâche et permet à l'utilisateur de les modifiers.
+ * @see Controller.TaskPropertiesController,Task
  */
 public class TaskPropertiesDialogPanel extends JFrame{
 
@@ -65,12 +67,11 @@ public class TaskPropertiesDialogPanel extends JFrame{
         return yesButton;
     }
 
+    /**
+     * Constructeur de TaskPropertiesDialogPanel
+     */
     public TaskPropertiesDialogPanel(){
         setLocationRelativeTo(null);
-
-
-
-
 
         yesButton = new JButton("Confirmer");
         noButton = new JButton("Annuler");
@@ -138,6 +139,10 @@ public class TaskPropertiesDialogPanel extends JFrame{
 
     }
 
+    /**
+     * Charge la tâche passé en paramètre et définie le contenue des différents champs selon les informations contenue dans les attributs de la tâche.
+     * @param t tâche à afficher
+     */
     public void loadFrom(Task t){
         System.out.println("SPDP::loadFrom("+ (t==null ? "null" : t.getName()) +")");
 

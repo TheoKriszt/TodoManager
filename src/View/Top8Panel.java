@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 /**
- * Created by Theo on 07/12/2016.
+ * Sur classe vue des Tâches, les affichant selon un tri spécifique.
+ * 8 tâches sont afficher : au maximum 1 tâche importante , 3 tâches moyennes  et 5 normales.
+ *
+ * @see Task,TaskView
  */
 public class Top8Panel extends ObserverPanel {
 
@@ -15,7 +18,14 @@ public class Top8Panel extends ObserverPanel {
     }
 
 
-    @Override
+    /**
+     * Met à jour l'affichage des 8 tâches.
+     * @param o
+     * @param arg
+     * @throws NullPointerException
+     *
+     * @see Task#findTop8Tasks(ArrayList)
+     */
     public void update(Observable o, Object arg) {
         removeAll();
         ArrayList<Task> tasks = Task.allTasks();

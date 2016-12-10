@@ -19,16 +19,24 @@ import java.util.Date;
 import static org.joda.time.DateTimeZone.UTC;
 
 /**
- * Created by Antho on 09/12/2016.
+ * Classe de contrôle pour le bilan
  */
 public class BilanController {
 
     private Bilan bilan;
 
+    /**
+     * Constructeur du BilanController
+     * @param b Le bilan à contrôler
+     */
     public BilanController(Bilan b){
         bilan = b;
     }
 
+    /**
+     * Définie les différents listeners nécessaires aux composants du bilan
+     * @param bp La vue du bilan sur laquel sera appliqué les listeners
+     */
     public void setListener(BilanPanel bp){
         JButton bilan = bp.getBilanButton();
         JDatePanelImpl startModel = bp.getStartDatePicker();
@@ -41,6 +49,12 @@ public class BilanController {
         });
     }
 
+    /**
+     * Met à jour le contenue du bilan
+     * @param start la nouvelle date de début pour le bilan
+     * @param end   la nouvelle date de fin pour le bilan
+     * @see Bilan#update(JDatePanelImpl, JDatePanelImpl)
+     */
     private void updateContent(JDatePanelImpl start, JDatePanelImpl end){
         System.out.println("BilanController::updateContent()");
         bilan.update(start, end);

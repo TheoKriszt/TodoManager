@@ -10,7 +10,10 @@ import java.util.Comparator;
 import java.util.Observable;
 
 /**
- * Created by achaillot on 05/12/16.
+ * Classe Modèle des tâches, permettant d'effectuer tout types d'opérations sur celle ci.
+ * Une tâche représentant quelque chose à faire pour une date donnée, elle est définie par son nom.
+ *
+ * @see TaskView,LongTask,Controller.TaskController
  */
 public class Task extends Observable implements Serializable {
 
@@ -21,6 +24,16 @@ public class Task extends Observable implements Serializable {
     protected int progress = 0;
     protected transient TaskView view;
 
+    /**
+     * Constructeur de tâche.
+     * Deux tâches ne peuvent pas avoir le même nom.
+     * Par défault elle sera référencé dans la catégorie "Aucune".
+     *
+     * @param name Nom de la tâche
+     * @throws UnsupportedOperationException
+     * @throws IllegalArgumentException
+     * @see Task#setName(String)
+     */
     public Task(String name) throws UnsupportedOperationException, IllegalArgumentException{
         setName(name); //tentera de donner un nom, assure de base l'unicité par noms
         Category c = Category.getAucune();
@@ -43,6 +56,16 @@ public class Task extends Observable implements Serializable {
         return name;
     }
 
+    /**
+     * Méthode de renommage pour une tâche.
+     * Une tâche ne peut pas être renommé si :
+     *          - On la modifie après qu'elle ait été réalisé.
+     *          - On lui donne le nom vide ("").
+     *          - Le nom choisi est déjà pris par une autre tâche.
+     * @param name Nouveau nom de la tâche
+     * @throws UnsupportedOperationException
+     * @throws IllegalArgumentException
+     */
     public void setName(String name) throws UnsupportedOperationException, IllegalArgumentException {
         if (this.name.equals(name) && this != null){
             //return; //Pas de changement, inutile de poursuivre
@@ -60,6 +83,14 @@ public class Task extends Observable implements Serializable {
         this.name = name;
     }
 
+    /**
+     * Constructeur d'une tâche.
+     * La tâche est créé avec un nom et une catégorie précisé en paramètre.
+     *
+     * @param name Nom de la tâche
+     * @param c Catégorie de la tâche
+     * @see Task(String)
+     */
     public Task(String name,Category c){
         this(name);
         c.addTask(this);
@@ -69,6 +100,13 @@ public class Task extends Observable implements Serializable {
         this.contenu = contenu;
     }
 
+    /**
+     * modification de la date d'échéance pour une tâche.
+     * La date d'échéance ne peut être repoussée que dans le futur.
+     *
+     * @param ld Nouvelle échéance
+     * @throws IllegalArgumentException
+     */
     public void setEcheance(LocalDate ld) throws IllegalArgumentException{
         if (ld.isBefore(LocalDate.now(DateTimeZone.UTC))){
             throw new IllegalArgumentException("Une tâche ne peut être repoussée que dans le futur");
@@ -80,6 +118,13 @@ public class Task extends Observable implements Serializable {
         return progress;
     }
 
+    /**
+     * Modification de la progression d'une tâche.
+     * Doit être compris entre 0 et 100, il ne peut pas regresser.
+     *
+     * @param progress Nouvel avancement
+     * @throws IllegalArgumentException
+     */
     public void setProgress(int progress) {
 
         if (progress > 100 || progress < 0){
@@ -120,8 +165,8 @@ public class Task extends Observable implements Serializable {
     }
 
     /**
-     *
-     * @return la liste des tâches ordonnée par date d'écheance croissante
+     * Tri les tâches par date d'échéance croissante.
+     * @param tasks liste de tâche à trier
      */
     public static void sortByDueDate(ArrayList<Task> tasks){
         tasks.sort(new Comparator<Task>() {
@@ -135,7 +180,8 @@ public class Task extends Observable implements Serializable {
 
     /**
      *
-     * @return le compaateur utilisé pour trier les tâches par echeance intermediaire décroissante
+     *
+     * @return le comparateur utilisé pour trier les tâches par echeance intermediaire décroissante
      */
     protected static Comparator<Task> getIntermediateComparator(){
         return (new Comparator<Task>() {
@@ -155,6 +201,13 @@ public class Task extends Observable implements Serializable {
         tasks.sort(getIntermediateComparator());
     }
 
+    /**
+     * Méthode vérifiant que l'échéance d'une tâche est bien comprise entre deux dates.
+     *
+     * @param start date du début de l'encadrement
+     * @param end   date de fin de l'encadrement
+     * @return true si l'échéance est comprise entre les deux dates , false sinon.
+     */
     public boolean isBetween(LocalDate start,LocalDate end){
         if (start == null || end == null) return false;
         if(echeance.isEqual(start) || echeance.isEqual(end)){
@@ -194,6 +247,10 @@ public class Task extends Observable implements Serializable {
         return tasks;
     }
 
+    /**
+     * définie la vue de la tâche.
+     * @param v La view qui va être observer
+     */
     public void setView(TaskView v){
         view = v;
         addObserver(v);
@@ -203,7 +260,12 @@ public class Task extends Observable implements Serializable {
         return view;
     }
 
-    //Todo : empecher deux tâches d'avoir le même nom
+    /**
+     * Recherche une tâche portant le nom passé en paramètre.
+     *
+     * @param n Le nom de la tâche que l'on recherche
+     * @return Tâche portant le nom passé en paramètre
+     */
     public static Task findByName(String n){
         ArrayList<Task> tasks = allTasks();
         Task t = null;
@@ -215,6 +277,11 @@ public class Task extends Observable implements Serializable {
         return t;
     }
 
+    /**
+     * Recherche la catégorie de la tâche
+     *
+     * @return La catégorie de la tâche
+     */
     public Category findContainer(){
         for (Category c : Category.getCategories()){
             if (c.getTasks().contains(this))
@@ -223,6 +290,10 @@ public class Task extends Observable implements Serializable {
         return null;
     }
 
+    /**
+     * Déplace la tâche dans la catégorie de destination.
+     * @param dest Catégorie dans laquelle la tâche se déplacera
+     */
     public void moveToCategory(Category dest){
         ArrayList<Category> cats = Category.getCategories();
         Category myCat = null;

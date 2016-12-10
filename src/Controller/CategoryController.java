@@ -8,16 +8,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Theo on 08/12/2016.
+ * Classe de contrôle pour les Catégories
+ * @see Category
+ * @see CategoryView
+ * @see View.CategoriesPanel
  */
 public class CategoryController {
     private Category category;
 
+    /**
+     * Constructeur du controller
+     * @param c catégorie à contrôler
+     */
     public CategoryController(Category c){
         //add listeners
         category = c;
     }
 
+    /**
+     * Définie les différents listeners nécessaire au composants de la vue des catégories
+     * @param v vue des catégories sur laquel sera appliqué les listeners.
+     * @see CategoryView
+     */
     public void setListeners(CategoryView v){
         v.getRemoveButton().addActionListener(new ActionListener() {
             @Override
@@ -35,6 +47,9 @@ public class CategoryController {
 
     }
 
+    /**
+     * Méthode définissant le comportement du listener pour le editButton
+     */
     private void editButtonPressed() {
 
         String s = (String)JOptionPane.showInputDialog(
@@ -59,6 +74,9 @@ public class CategoryController {
 
     }
 
+    /**
+     * Méthode définissant le comportement du listener pour le removeButton
+     */
     private void removeButtonPressed() {
 
         Object[] options = {"Confirmer", "Annuler"};

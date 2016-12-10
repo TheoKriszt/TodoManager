@@ -9,7 +9,9 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Created by Antho on 07/12/2016.
+ * BilanPanel est la classe s'occupant de l'affichage générale de la fenêtre du bilan séparé en deux parties.
+ * Elle contient : -   un northPanel permettant la selection de la période et un bouton permettant l'affichage du bilan.
+ *                 -   un centerPanel contenant l'affichage du bilan.
  */
 public class BilanPanel extends ObserverPanel {
 
@@ -18,15 +20,17 @@ public class BilanPanel extends ObserverPanel {
     private JDatePanelImpl startDatePicker, endDatePicker;
     private JLabel dateDebutLabel, dateFinLabel;
 
+    /**
+     * Constructeur du BilanPanel.
+     * Le controller passé en paramètre permet la mise en place des listener nécessaire au Panel.
+     *
+     * @param bpc controller du BilanPanel.
+     * @see BilanController
+     */
     public BilanPanel(BilanController bpc){
         /**
          * Le choix de la période avec des JDatePickers se fait dans le northPanel
          * L'affichage du bilan arrive dans le centerPanel
-         *
-         * Au sein du NorthPanel :
-         *  Les indicateurs "Entrez date de début" et "Entrez date de fin" sont en north
-         *  Le JDatePicker de date de début en west, celui de date de fin en east
-         *  Le bouton pour appeler le rendu est en south
          */
 
         setLayout(new BorderLayout(0, 100));
@@ -39,6 +43,12 @@ public class BilanPanel extends ObserverPanel {
         bpc.setListener(this);
     }
 
+    /**
+     * Méthode permettant de créer le NorthPanel
+     * Les indicateurs "Entrez date de début" et "Entrez date de fin" sont en north
+     * Le JDatePicker de date de début en west, celui de date de fin en east
+     * Le bouton pour appeler le rendu est en south
+     */
     private void createNorthPanel() {
         northPanel =new JPanel(new BorderLayout(0, 25));
         northPanel.setBorder(BorderFactory.createTitledBorder("Saisir la période pour l'édition du bilan"));

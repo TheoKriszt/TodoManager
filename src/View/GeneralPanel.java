@@ -1,16 +1,14 @@
 package View;
 
-import Model.Category;
-import Model.Task;
-import org.joda.time.DateTime;
 
-import javax.swing.*;
+import Model.Task;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
+
 
 /**
- * Created by Theo on 07/12/2016.
+ *sur classe vue, affichage générale, affichant toutes les tâches existantes triées par ordre d'échéance.
+ * @see Task,TaskView
  */
 public class GeneralPanel extends ObserverPanel {
 
@@ -18,7 +16,12 @@ public class GeneralPanel extends ObserverPanel {
 
     }
 
-    @Override
+    /**
+     * Met à jour l'affichage du generalPanel
+     * @param o
+     * @param arg
+     * @throws NullPointerException
+     */
     public void update(Observable o, Object arg) {
         removeAll();
         ArrayList<Task> tasks = Task.allTasks();

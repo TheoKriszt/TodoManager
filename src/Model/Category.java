@@ -12,7 +12,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by achaillot on 05/12/16.
+ * Classe Modèle des catégories, permettant d'effectuer tout type d'opérations sur celle ci.
+ * @see CategoryController
+ * @see CategoryView
+ * @see View.CategoriesPanel
  */
 public class Category extends Observable implements Serializable {
 
@@ -22,7 +25,12 @@ public class Category extends Observable implements Serializable {
     static transient TodoManager todoManager; //Les catégories sont rattachées à un TodoManager
     private transient CategoryView view;
 
-
+    /**
+     * Constructeur par nom.
+     * Deux catégories ne peuvent pas avoir le même nom.
+     * @param name Nom de la catégorie
+     * @throws IllegalArgumentException
+     */
     public Category(String name) throws IllegalArgumentException{
         if (name.isEmpty()){
             throw new IllegalArgumentException();
@@ -38,16 +46,31 @@ public class Category extends Observable implements Serializable {
         setObservers();
     }
 
+    /**
+     * Mise en place du pattern Observable Observer pour
+     * @see Observer
+     */
     private void setObservers() {
         deleteObservers(); // fais le ménage dans les observers éventuellement récupérés auparavant
         addObserver(todoManager.getFrame()); //les màj seront transmis et dirigés correctement depuis la fenêtre principale
         setChanged();
     }
 
+    /**
+     * Méthode définissant associant la catégorie au TodoManager
+     * @param todoManager
+     * @see TodoManager
+     */
     public static void setTodoManager(TodoManager todoManager) {
         Category.todoManager = todoManager;
     }
 
+    /**
+     * Ajout d'une tâche dans la catégorie.
+     * A chaque ajout les tâches présentent dans la catégorie sont triées (par ordre d'échéance).
+     * @param t Tâche à ajouter.
+     * @see Task
+     */
     public void addTask(Task t){
         tasks.add(t);
         Task.sortByDueDate(tasks);
@@ -58,6 +81,13 @@ public class Category extends Observable implements Serializable {
         return categories.get(0);
     }
 
+    /**
+     * Déplacement d'une tâche d'une catégorie à une autre.
+     *
+     * @param t Tâche que l'on déplace
+     * @param c Catégorie dans laquelle on déplace la tâche
+     * @see Task
+     */
     public void moveTaskToCategory(Task t,Category c){
         System.out.println("Moving task " + t.getName() + " from cat " + getName() + " to " + c.getName());
         eraseTask(t);
@@ -67,7 +97,12 @@ public class Category extends Observable implements Serializable {
 //        notifyObservers();
     }
 
-    // vérifier que on est bien sur la catégory contenante
+
+    /**
+     * Retirer une tâche d'une catégorie
+     * @param t tâche à retiré
+     * @deprecated
+     */
     @Deprecated
     public void removeTaskFromCategory(Task t){
         System.out.println("Removing task " + t.getName() + " from cat " + name);
@@ -81,6 +116,14 @@ public class Category extends Observable implements Serializable {
         notifyObservers();
     }
 
+    /**
+     * Renommer une catégorie.
+     * Une catégorie ne peut pas être renommer si le nom choisi est celui d'une catégorie déjà existante.
+     * La catégorie par défault "Aucune" n'est pas renommable.
+     *
+     * @param newName Nouveau nom
+     * @throws UnsupportedOperationException,IllegalArgumentException
+     */
     public void renameCategory(String newName) throws UnsupportedOperationException {
         if (equals(getAucune())){
             throw new UnsupportedOperationException("Interdiction de renommer la Catégorie \""+getName()+"\"");
@@ -93,7 +136,11 @@ public class Category extends Observable implements Serializable {
     }
 
     /**
+     * Supprimer une catégorie.
+     * La catégorie par défault "Aucune" ne peut pas être supprimé.
+     * Les tâches présente dans la catégorie supprimée sont envoyées dans "Aucune".
      *
+     * @throws UnsupportedOperationException
      */
     public void removeCategory(){
         if (equals(getAucune())){
@@ -177,6 +224,12 @@ public class Category extends Observable implements Serializable {
         update();
     }
 
+    /**
+     * Méthode de recherche de catégorie par nom.
+     *
+     * @param n nom recherché
+     * @return Category
+     */
     public static Category findByName(String n){
         for (Category c : getCategories()){
             if (c.getName().equals(n)){
@@ -186,6 +239,11 @@ public class Category extends Observable implements Serializable {
         return null;
     }
 
+    /**
+     * Retire une tâche d'une catégorie
+     *
+     * @param task tâche à retirer
+     */
     public void eraseTask(Task task) {
         if (tasks.contains(task)){
             tasks.remove(task);
@@ -194,6 +252,9 @@ public class Category extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Met à jour la catégorie et prévient la vue.
+     */
     public void update(){
         setChanged();
         notifyObservers();

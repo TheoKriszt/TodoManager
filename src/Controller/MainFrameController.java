@@ -14,16 +14,29 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by Theo on 09/12/2016.
+ * Classe de contrôle pour la fenêtre principale
+ * @see MainFrame
  */
 public class MainFrameController {
 
     private TodoManager todoManager;
 
+    /**
+     * Constructeur du controller
+     * @param tm instance de TodoManager
+     */
     public MainFrameController(TodoManager tm){
         todoManager = tm;
     }
 
+    /**
+     * Définie les différents listeners nécessaire au composants de la Frame il contient :
+     *          - le listener pour quitter l'application depuis le menu
+     *          - le listener pour créer une nouvelle catégorie depuis le menu
+     *          - le listener pour créer une nouvelle tâche depuis le menu
+     *
+     * @param mf fenêtre principale
+     */
     public void setListeners(MainFrame mf) {
         todoManager.setFrame(mf);
 

@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 
 /**
- * Created by Theo on 10/12/2016.
+ * Classe de contrôle pour le détails des tâches
+ * @see TaskPropertiesDialogPanel
+ * @see Task
  */
 public class TaskPropertiesController {
 
@@ -20,10 +22,19 @@ public class TaskPropertiesController {
 
     private TaskPropertiesDialogPanel taskPropertiesDialogPanel;
 
+    /**
+     * Constructeur du controller
+     * @param t tâche concerné
+     */
     public TaskPropertiesController(Task t){
         task = t;
     }
 
+    /**
+     * Définie les différents listeners nécessaire au composants de la vue des tâches détaillées
+     * @param tpdp vue sur laquel seront appliquée les listeners
+     * @see TaskPropertiesDialogPanel
+     */
     public void setListeners(TaskPropertiesDialogPanel tpdp){
         taskPropertiesDialogPanel = tpdp;
 

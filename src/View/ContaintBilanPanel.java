@@ -7,7 +7,8 @@ import java.awt.*;
 import org.joda.time.*;
 
 /**
- * Created by Antho on 07/12/2016.
+ * Panel gérant l'affichage du bilan
+ * @see BilanPanel
  */
 public class ContaintBilanPanel extends JPanel {
 
@@ -17,6 +18,12 @@ public class ContaintBilanPanel extends JPanel {
     private JLabel name, taskNotReleasedAndLate, taskReleasedInTime, taskReleasedLate;
     private JPanel westPanel, eastPanel;
 
+    /**
+     * Constructeur du ContaintBilanPanel.
+     * organise et structure l'affichage du bilan.
+     * affichage des tâches à gauche, les différents pourcentages à droite.
+     * @param b bilan contenant les données à afficher
+     */
     public ContaintBilanPanel(Bilan b){
         LocalDate db, df;
         db = b.getStart();
@@ -34,7 +41,6 @@ public class ContaintBilanPanel extends JPanel {
         System.out.println("bilan pour : " + this.dateDebut + " à " + this.dateFin);
         System.out.println("Tâches non réalisé et en retard : " + b.getPercentageTasksNotReleasedAndLate() + " %");
 
-        //name = new JLabel("Bilan",JLabel.CENTER);
         taskNotReleasedAndLate = new JLabel("Tâches non réalisées et en retard : " + b.getPercentageTasksNotReleasedAndLate() + " %",JLabel.CENTER);
         taskReleasedInTime = new JLabel("Tâches réalisées dans les temps : " + b.getPercentageTasksReleasedInTime() + " %",JLabel.CENTER);
         taskReleasedLate = new JLabel("Tâches réalisées en retard : " + b.getPercentageTasksReleasedLate() + " %",JLabel.CENTER);
@@ -52,7 +58,6 @@ public class ContaintBilanPanel extends JPanel {
             westPanel.setLayout(gl);
         }
 
-        //add(name,BorderLayout.NORTH);
         add(eastPanel,BorderLayout.EAST);
         add(westPanel, BorderLayout.WEST);
 

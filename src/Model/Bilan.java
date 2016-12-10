@@ -9,7 +9,11 @@ import java.util.Date;
 import java.util.Observable;
 
 /**
- * Created by achaillot on 06/12/16.
+ * Bilan permet de recupérer les différentes tâches pour une période donnée.
+ * Elle permet aussi de savoir combien de tâches sur la période ont été :
+ *  - finies dans les temps
+ *  - finies en retard
+ *  - toujours pas finies... et en retard !
  */
 public class Bilan extends Observable{
 
@@ -23,10 +27,11 @@ public class Bilan extends Observable{
 
     /**
      * Charge les stats  :
-     * Combien de tâches sur la période ont été :
-     *  - finies dans les temps
-     *  - finies en retard
-     *  - toujours pas finies... et en retard !
+     * - La liste des tâches sur la période
+     * - Combien de tâches sur la période ont été :
+     *      - finies dans les temps
+     *      - finies en retard
+     *      - toujours pas finies... et en retard !
      */
     private void loadTasks(){
         ArrayList<Category> categories = Category.getCategories();
@@ -55,7 +60,7 @@ public class Bilan extends Observable{
     }
 
     /**
-     *
+     * Retourne le pourcentage
      * @param f le nombre de tâches concernées par le paramètre
      * @return le pourcentage (par règle de 3) de tâches concernées par le paramètre
      */
@@ -105,6 +110,12 @@ public class Bilan extends Observable{
         view = tabBilan;
     }
 
+
+    /**
+     * Met à jour le bilan
+     * @param start la nouvelle date de début pour le bilan
+     * @param end   la nouvelle date de fin pour le bilan
+     */
     public void update(JDatePanelImpl start, JDatePanelImpl end) {
         LocalDate startDate, endDate;
 

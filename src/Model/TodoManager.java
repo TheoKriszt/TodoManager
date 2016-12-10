@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.Observable;
 
 /**
- * Created by achaillot on 06/12/16.
+ * Gestionnaire de TodoManager
+ * Cette classe représente l'instance de la liste des tâches de l'application
+ *
  */
 public class TodoManager extends Observable {
 

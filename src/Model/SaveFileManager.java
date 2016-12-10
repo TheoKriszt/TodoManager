@@ -7,12 +7,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Created by achaillot on 06/12/16.
+ *
  * Gestionnaire de lecture / écriture des divers éléments du projet depuis / vers un fichier
  * Usage du design pattern singleton : empêche l'accès multiple au(x) fichier(s) de sauvegarde et conserve leur intégrité
- */
-
-/**
  */
 public class SaveFileManager  {
 

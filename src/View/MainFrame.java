@@ -11,7 +11,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by Theo on 07/12/2016.
+ * Classe général des vues, regroupant tous les composants de l'application.
+ * C'est la fenêtre de l'application où tout sera affiché. elle possède :
+ *              - Un Menu (menuBar)
+ *              - des Onglets (tabbedPane)
+ *              - des composants (tabGeneral,tabCategories, tabBilan, tabIntermediaire, tabTop8)
  */
 public class MainFrame extends JFrame implements Observer {
 
@@ -59,7 +63,7 @@ public class MainFrame extends JFrame implements Observer {
     }
 
     /**
-     * Créé l'arborescence des menus (Quiter, Nouvelle tâche, Nouvelle Cétagorie ...)
+     * Créé l'arborescence des menus (Quitter, Nouvelle tâche, Nouvelle Cétagorie ...)
      */
     private void buildMenu() {
         menuBar = new JMenuBar();
@@ -85,6 +89,9 @@ public class MainFrame extends JFrame implements Observer {
     }
 
     @Override
+    /**
+     *  Met à jour l'affichage de la fenêtre lors d'un changement d'onglet
+     */
     public void update(Observable o, Object arg) {
         System.out.println("Sending main update");
         ObserverPanel activePanel = (ObserverPanel) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());

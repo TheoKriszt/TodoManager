@@ -11,7 +11,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by Theo on 07/12/2016.
+ *  Classe vue des tâches, gérant le rendu visuel à l'affichage d'une tâche.
+ *  organisation : - Un TitlesPanel(NORTH) contenant nameLabel et categoryLabel
+ *                 - Un controlPanel(SOUTH) contenant les boutons
+ *                 - Un centerPanel(CENTER) contenant remainingLabel et progressLabel
+ *                 - StartDateLabel(WEST) et endDateLabel(EAST) sont directement ajouter a la vue
  */
 public class TaskView extends ObserverPanel{
 
@@ -45,6 +49,11 @@ public class TaskView extends ObserverPanel{
         return moveButton;
     }
 
+    /**
+     * Constructeur de TaskView.
+     * Le controller passé en paramètre permet la mise en place des listener nécessaire a la view
+     * @param tc Controller de la view
+     */
     public TaskView(TaskController tc){
         setLayout(new BorderLayout(5, 5));
         setMinimumSize(new Dimension(200, 300));
@@ -66,7 +75,6 @@ public class TaskView extends ObserverPanel{
         controlPanel = new JPanel();
         titlesPanel = new JPanel();
         centerPanel  = new JPanel();
-        //titlesPanel.setLayout(new BoxLayout(titlesPanel, BoxLayout.X_AXIS));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
 
@@ -92,8 +100,11 @@ public class TaskView extends ObserverPanel{
     }
 
 
-
-    @Override
+    /**
+     * Met à jour la vue avec les nouvelles données contenu dans la tâche
+     * @param o objet mis à jour (une tâche ici)
+     * @param arg
+     */
     public void update(Observable o, Object arg) {
         if (o instanceof Task){
             Task t = (Task)o;

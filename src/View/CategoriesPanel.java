@@ -9,10 +9,17 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by Theo on 08/12/2016.
+ * Sur classe vue des catégories affichant toutes les catégories sur une même page.
+ * @see Category,CategoryView,CategoriesPanel
  */
 public class CategoriesPanel extends ObserverPanel{
-    @Override
+    /**
+     * Mise à jour de l'affichage de l'ensemble des catégories ainsi que les tâches qu'elles contiennent.
+     *
+     * @param o objet mis à jour
+     * @param arg
+     * @throws NullPointerException
+     */
     public void update(Observable o, Object arg) {
         System.out.println("CategoriesPanel::update");
         removeAll();

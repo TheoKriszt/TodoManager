@@ -5,7 +5,7 @@ import javax.xml.bind.JAXBPermission;
 import java.util.Observer;
 
 /**
- * Created by Theo on 08/12/2016.
+ * Classe abstraite permettant de définir directements des JPanel qui implémentent l'interface Observer
  */
 public abstract class ObserverPanel extends JPanel implements Observer{
 }

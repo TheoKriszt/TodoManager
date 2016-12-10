@@ -7,16 +7,40 @@ import org.joda.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Created by achaillot on 06/12/16.
+ * Classe modèle des tâches longues, permettant d'effectuer tout type d'opération sur celle ci.
+ * C'est une classe fille de la classe Task.
+ * Elle possède une date de fin (échéance) ainsi qu'une date de début !
+ *
+ * @see Task,Controller.TaskController,View.TaskView
  */
 public class LongTask extends Task {
 
     LocalDate startDate = LocalDate.now();
 
+    /**
+     * Constructeur de tâche.
+     * Deux tâches ne peuvent pas avoir le même nom.
+     * Par défault elle sera référencé dans la catégorie "Aucune".
+     *
+     * @param name Nom de la tâche
+     * @throws UnsupportedOperationException
+     * @throws IllegalArgumentException
+     * @see Task#setName(String)
+     * @param name
+     */
     public LongTask(String name) {
         super(name);
     }
 
+    /**
+     *
+     * Constructeur d'une tâche.
+     * La tâche est créé avec un nom et une catégorie précisé en paramètre.
+     *
+     * @param name Nom de la tâche
+     * @param c Catégorie de la tâche
+     * @see Task(String)
+     */
     public LongTask(String name, Category c) {
         super(name, c);
     }
@@ -25,6 +49,13 @@ public class LongTask extends Task {
         return startDate;
     }
 
+    /**
+     * Modifie ou initialise la date de début de la tâche longue.
+     * La date de début ne peut pas être antérieure à l'échéance de la tâche.
+     *
+     * @param startDate date du début de tâche
+     * @throws IllegalArgumentException
+     */
     public void setStartDate(LocalDate startDate) {
         if (startDate.isAfter(echeance)){
             throw new IllegalArgumentException("La date de début ne peut être antérieure à l'échéance");
@@ -36,6 +67,15 @@ public class LongTask extends Task {
         return Days.daysBetween(startDate, echeance).getDays();
     }
 
+    /**
+     * A partir de la durée de la tâche longue on obtient 4 jours :
+     *          - Le jour qu'il est à [durée/4] depuis le début de la tâche
+     *          - Le jour qu'il est à [durée/2] depuis le début de la tâche
+     *          - Le jour qu'il est à [3*durée/4] depuis le début de la tâche
+     *          - Le jour qu'il est à [durée] depuis le début de la tâche
+     *
+     * @return Un tableau de 4 cases contenant les 4 jours
+     */
     private LocalDate[] getQuartiles(){
         LocalDate[] quartiles = new LocalDate[4];
         long d = getDuration();

@@ -12,11 +12,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by Theo on 08/12/2016.
+ * Classe de contrôle pour les tâches
  */
 public class TaskController {
     private Task task;
 
+    /**
+     * Constructeur de TaskController
+     * @param t La tâche à contrôler
+     */
     public TaskController(Task t){
         //init listeners
         task = t;
@@ -24,7 +28,7 @@ public class TaskController {
 
     /**
      * Prépare les listeners pour écouter les actions utilisateur de la vue
-     * @param v
+     * @param v La vue de la tâche sur laquel sera appliqué les listeners
      */
     public void setListeners(TaskView v) {
         JButton removeButton, editButton, moveButton;
@@ -58,13 +62,9 @@ public class TaskController {
 
     }
 
-    //Todo : Créer genre un popup pour chaque action
-    //Todo : Le popup demandant respectivement de
-    // - Entrer un texte et confirmer
-    // - Choisir dans une drop down la destination et confirmer
-    // - Confirmer la suppression
-    // Les popups peuvent afficher des messages d'erreur ? Déléguer à d'autres popups ?
-
+    /**
+     * Méthode définissant le comportement du listener pour le editButton
+     */
     private void onEditButtonPressed() {
 
         TaskPropertiesController tpc = new TaskPropertiesController(task);
@@ -77,6 +77,9 @@ public class TaskController {
 
     }
 
+    /**
+     * Méthode définissant le comportement du listener pour le MoveButton
+     */
     private void onMoveButtonPressed(){
         ArrayList<Category> cats = Category.getCategories();
         String[] possibilities = new String[cats.size()];
@@ -102,6 +105,9 @@ public class TaskController {
 
     }
 
+    /**
+     * Méthode définissant le comportement du listener pour le RemoveButton
+     */
     private void onRemoveButtonPressed(){
 
         Object[] options = {"Confirmer", "Annuler"};

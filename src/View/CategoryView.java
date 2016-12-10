@@ -11,17 +11,25 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by Theo on 08/12/2016.
+ *  Classe vue des catégories, gérant le rendu visuel à l'affichage d'une catégorie.
+ *  organisation : - Un nameLabel contenant le nom de la catégorie
+ *                 - un taskPanel contenant les tâches contenu dans la catégorie
+ *                 - un controlPanel contenant les boutons editButton et removeButton
+ *  @see Category,CategoriesPanel,CategoryController
  */
 public class CategoryView extends ObserverPanel{
-
-
 
     private JPanel tasksPanel, controlPanel;
     private JLabel nameLabel;
     private JButton editButton, removeButton;
     private CategoryController categoryController;
 
+    /**
+     * Constructeur de CategoryView.
+     * Le controller passé en paramètre permet la mise en place des listener nécessaire a la view.
+     *
+     * @param cc controller de la view
+     */
     public CategoryView(CategoryController cc){
         setLayout(new BorderLayout(5, 5));
         setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -46,7 +54,12 @@ public class CategoryView extends ObserverPanel{
         categoryController.setListeners(this);
     }
 
-    @Override
+    /**
+     * Met à jour la view avec les nouvelles données contenu dans la catégorie.
+     *
+     * @param o objet mis a jour (une catégorie ici)
+     * @param arg
+     */
     public void update(Observable o, Object arg) {
         nameLabel.setText(((Category)o).getName());
         tasksPanel.removeAll(); //wipe old content
