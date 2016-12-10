@@ -11,7 +11,6 @@ import java.time.temporal.ChronoUnit;
  */
 public class LongTask extends Task {
 
-
     LocalDate startDate = LocalDate.now();
 
     public LongTask(String name) {

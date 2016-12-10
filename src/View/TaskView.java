@@ -16,9 +16,9 @@ import java.util.Observer;
 public class TaskView extends ObserverPanel{
 
     protected TaskController taskController;
-    protected JLabel nameLabel, categoryLabel, startDateLabel, endDateLabel, progressLabel;
+    protected JLabel nameLabel, categoryLabel, startDateLabel, endDateLabel, progressLabel, remainingLabel ;
     protected JButton removeButton, editButton, moveButton;
-    protected JPanel controlPanel, titlesPanel;
+    protected JPanel controlPanel, titlesPanel, centerPanel;
 
     public JLabel getNameLabel() {
         return nameLabel;
@@ -57,6 +57,7 @@ public class TaskView extends ObserverPanel{
         endDateLabel = new JLabel("", JLabel.RIGHT);
         startDateLabel = new JLabel("", JLabel.LEFT);
         progressLabel = new JLabel("%", JLabel.CENTER);
+        remainingLabel = new JLabel("", JLabel.CENTER);
 
         editButton = new JButton("Modifier");
         removeButton = new JButton("Supprimer");
@@ -64,7 +65,9 @@ public class TaskView extends ObserverPanel{
 
         controlPanel = new JPanel();
         titlesPanel = new JPanel();
-        titlesPanel.setLayout(new BoxLayout(titlesPanel, BoxLayout.Y_AXIS));
+        centerPanel  = new JPanel();
+        //titlesPanel.setLayout(new BoxLayout(titlesPanel, BoxLayout.X_AXIS));
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
 
 
@@ -72,7 +75,9 @@ public class TaskView extends ObserverPanel{
         titlesPanel.add(categoryLabel);
         add(endDateLabel, BorderLayout.EAST);
         add(startDateLabel, BorderLayout.WEST);
-        add(progressLabel, BorderLayout.SOUTH);
+
+        centerPanel.add(remainingLabel);
+        centerPanel.add(progressLabel);
 
         controlPanel.add(editButton);
         controlPanel.add(moveButton);
@@ -80,6 +85,7 @@ public class TaskView extends ObserverPanel{
 
         add(controlPanel, BorderLayout.SOUTH);
         add(titlesPanel, BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.CENTER);
 
         taskController.setListeners(this);
 
@@ -94,7 +100,8 @@ public class TaskView extends ObserverPanel{
             categoryLabel.setText("["+t.findContainer().getName()+"]");
             nameLabel.setText(t.getName());
             endDateLabel.setText(t.getEcheance().toString());
-            progressLabel.setText(t.getProgress()+" %");
+            progressLabel.setText(t.getProgress()+" % effectués");
+            remainingLabel.setText(t.getTimeLeftMessage());
 
             if (t instanceof LongTask){
                 startDateLabel.setText(((LongTask) t).getStartDate().toString());

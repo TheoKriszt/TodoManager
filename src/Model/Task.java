@@ -305,4 +305,25 @@ public class Task extends Observable implements Serializable {
         return top;
 
     }
+
+    /**
+     *
+     * @return le messsage a afficher selon que la tâche soit à rendre aujourd'hui, dans X jours ou soit en retard
+     */
+    public String getTimeLeftMessage(){
+        String ret = "";
+
+        int diff = Days.daysBetween(LocalDate.now(), echeance).getDays();
+
+        if (diff > 0){
+            ret = diff + " jours restants";
+        }else if (diff < 0){
+            ret = "dûe depuis " + diff + " jours";
+        }else{
+            ret = "dûe aujourd'hui";
+        }
+
+        return ret;
+
+    }
 }
