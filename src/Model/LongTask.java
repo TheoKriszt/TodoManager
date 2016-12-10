@@ -37,34 +37,50 @@ public class LongTask extends Task {
         return Days.daysBetween(startDate, echeance).getDays();
     }
 
+    private LocalDate[] getQuartiles(){
+        LocalDate[] quartiles = new LocalDate[4];
+        long d = getDuration();
+
+        quartiles[0] = startDate.plusDays((int) (d/4));
+        quartiles[1] = startDate.plusDays((int) (d/2));
+        quartiles[2] = startDate.plusDays((int) ((3*d)/4));
+        quartiles[3] = startDate.plusDays((int) (d));
+
+        return quartiles;
+    }
+
+    /**
+     * Pour chaque échéance intermediaire décroissante (réparties en quartiles),
+     * @return true si l'avancement est inférieur à celui attendu pour cette échéance intermediaire
+     */
     @Override
     public boolean isLate() {
         LocalDate ld25, ld50, ld75, ld100;
-        long d = getDuration();
-
-        ld25 = startDate.plusDays((int) (d/4));
-        ld50 = startDate.plusDays((int) (d/2));
-        ld75 = startDate.plusDays((int) (3*d/4));
-        ld100 = startDate.plusDays((int) d);
+        LocalDate[] quartiles = getQuartiles();
 
         LocalDate now = LocalDate.now();
 
-        if (      (now.isAfter(ld100) && progress < 100)
-               || (now.isAfter(ld75) && progress < 75)
-               || (now.isAfter(ld50) && progress < 50)
-               || (now.isAfter(ld25) && progress < 25)
-                ){
-            return true;
-        }else{
-            return false;
-        }
+        return (
+                  (now.isAfter(quartiles[3]) && progress < 100)
+               || (now.isAfter(quartiles[2]) && progress < 75)
+               || (now.isAfter(quartiles[1]) && progress < 50)
+               || (now.isAfter(quartiles[0]) && progress < 25)
+                );
 
+    }
 
+    /**
+     *
+     * @return la prochaine date d'échéance intermédiaire
+     */
+    @Override
+    public LocalDate getNextEcheance(){
+        LocalDate[] quartiles = getQuartiles();
 
-
-
-
-
+        if (progress > 75) return quartiles[3];
+        else if (progress > 50) return quartiles[2];
+        else if (progress > 25) return quartiles[1];
+        else return quartiles[0];
 
     }
 

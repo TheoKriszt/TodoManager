@@ -19,7 +19,7 @@ public class MainFrame extends JFrame implements Observer {
     private JMenu menuFichier, menuEdition;
     private JMenuItem menuItemQuitter, menuItemNewTask, menuItemNewCategory;
     private JTabbedPane tabbedPane;
-    private JComponent tabGeneral, tabCategories, tabBilan;
+    private JComponent tabGeneral, tabCategories, tabBilan, tabIntermediaire, tabTop8;
 
 
     public MainFrame(MainFrameController mfc){
@@ -41,6 +41,8 @@ public class MainFrame extends JFrame implements Observer {
         tabbedPane = new JTabbedPane();
         tabGeneral = new GeneralPanel ();
         tabCategories = new CategoriesPanel();
+        tabIntermediaire = new IntermediatePanel();
+        tabTop8 = new Top8Panel();
 
         Bilan bilan = new Bilan();
         BilanController bpc = new BilanController(bilan);
@@ -48,7 +50,9 @@ public class MainFrame extends JFrame implements Observer {
         bilan.setView((BilanPanel) tabBilan);
 
         tabbedPane.addTab("Général", tabGeneral);
-        tabbedPane.addTab("Catégories", tabCategories);
+        tabbedPane.addTab("Intermediaire", tabIntermediaire);
+        tabbedPane.addTab("Intermediaire", tabIntermediaire);
+        tabbedPane.addTab("Top 8", tabTop8);
         tabbedPane.addTab("Bilan", tabBilan);
 
         setContentPane(tabbedPane);
