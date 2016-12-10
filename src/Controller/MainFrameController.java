@@ -107,8 +107,6 @@ public class MainFrameController {
             public void stateChanged(ChangeEvent changeEvent) {
                 JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
                 int index = sourceTabbedPane.getSelectedIndex();
-                System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
-                System.out.println("new Tab is " + sourceTabbedPane.getComponentAt(index).getClass().getName());
                 ((ObserverPanel)sourceTabbedPane.getComponentAt(index)).update(null, null);
 
             }

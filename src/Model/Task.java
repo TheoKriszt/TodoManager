@@ -66,7 +66,7 @@ public class Task extends Observable implements Serializable {
     }
 
     public void setEcheance(LocalDate ld) throws IllegalArgumentException{
-        if (!ld.isAfter(LocalDate.now())){
+        if (!ld.isAfter(LocalDate.now(DateTimeZone.UTC))){
             throw new IllegalArgumentException("Une tâche ne peut être repoussée que dans le futur");
         }
         echeance = ld;
@@ -127,7 +127,7 @@ public class Task extends Observable implements Serializable {
     }
 
     public boolean isBetween(LocalDate start,LocalDate end){
-        System.out.println(start + "---" + end + " echeance : " + echeance);
+        if (start == null || end == null) return false;
         if(echeance.isEqual(start) || echeance.isEqual(end)){
             return true;
         }

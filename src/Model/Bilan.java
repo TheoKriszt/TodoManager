@@ -1,12 +1,18 @@
 package Model;
 
+import View.BilanPanel;
+import org.jdatepicker.impl.JDatePanelImpl;
 import org.joda.time.*;
+
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Observable;
 
 /**
  * Created by achaillot on 06/12/16.
  */
-public class Bilan {
+public class Bilan extends Observable{
 
     private LocalDate start = LocalDate.now().minusDays(15);
     private LocalDate end = LocalDate.now().plusDays(15);
@@ -14,19 +20,16 @@ public class Bilan {
     private float tasksReleasedInTime = 0f;
     private float tasksReleasedLate = 0f;
     private float tasksNotReleasedAndLate = 0f;
+    private BilanPanel view;
 
-
-    private static Bilan O = new Bilan();
-
-    private Bilan(){
-
-    }
-
-    public static Bilan instance() {
-        return O;
-    }
-
-    public void loadTasks(){
+    /**
+     * Charge les stats  :
+     * Combien de tâches sur la période ont été :
+     *  - finies dans les temps
+     *  - finies en retard
+     *  - toujours pas finies... et en retard !
+     */
+    private void loadTasks(){
         ArrayList<Category> categories = Category.getCategories();
         tasks = new ArrayList<Task>();
         for (Category c : categories){
@@ -52,6 +55,11 @@ public class Bilan {
         }
     }
 
+    /**
+     *
+     * @param f le nombre de tâches concernées par le paramètre
+     * @return le pourcentage (par règle de 3) de tâches concernées par le paramètre
+     */
     private int getPercentage(float f){
         if (!tasks.isEmpty()){
             f = (100*f)/tasks.size();
@@ -91,5 +99,25 @@ public class Bilan {
 
     public ArrayList<Task> getTasks() {
         return tasks;
+    }
+
+    public void setView(BilanPanel tabBilan) { // Todo : ?? Useless ?
+        addObserver(tabBilan);
+        view = tabBilan;
+    }
+
+    public void update(JDatePanelImpl start, JDatePanelImpl end) {
+        LocalDate startDate, endDate;
+        startDate = LocalDate.fromDateFields((Date) start.getModel().getValue());
+        endDate = LocalDate.fromDateFields((Date) end.getModel().getValue());
+
+        this.start = startDate;
+        this.end = endDate;
+
+        loadTasks();
+        System.out.println("Bilan chargé avec " + tasks.size() + " tâches sur la période");
+
+        setChanged();
+        notifyObservers();
     }
 }

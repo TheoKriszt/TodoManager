@@ -1,19 +1,11 @@
 package View;
 
-
-
+import Controller.BilanController;
+import Model.Bilan;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import org.joda.time.*;
-
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
-import javax.swing.text.DefaultFormatterFactory;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -21,69 +13,93 @@ import java.util.*;
  */
 public class BilanPanel extends ObserverPanel {
 
-    private JPanel northPanel = new JPanel(new BorderLayout(0,25));
-    private JPanel centerPan = new JPanel();
-    private JButton bilan;
-    private JDatePanelImpl startDatePanel,endDatePanel;
+    private JPanel centerPanel, northPanel, askForDatesPanel;
+    private JButton bilanButton;
+    private JDatePanelImpl startDatePicker, endDatePicker;
+    private JLabel dateDebutLabel, dateFinLabel;
 
+    public BilanPanel(BilanController bpc){
+        /**
+         * Le choix de la période avec des JDatePickers se fait dans le northPanel
+         * L'affichage du bilan arrive dans le centerPanel
+         *
+         * Au sein du NorthPanel :
+         *  Les indicateurs "Entrez date de début" et "Entrez date de fin" sont en north
+         *  Le JDatePicker de date de début en west, celui de date de fin en east
+         *  Le bouton pour appeler le rendu est en south
+         */
 
-    public BilanPanel(){
-        this.setLayout(new BorderLayout(0,100));
+        setLayout(new BorderLayout(0, 100));
+
+        createNorthPanel();
+
+        centerPanel = new JPanel();
+
+        add(centerPanel, BorderLayout.CENTER);
+        bpc.setListener(this);
+    }
+
+    private void createNorthPanel() {
+        northPanel =new JPanel(new BorderLayout(0, 25));
+        northPanel.setBorder(BorderFactory.createTitledBorder("Saisir la période pour l'édition du bilan"));
 
         Properties p = new Properties();
         p.put("text.today", "Today"); //Date par défaut du datepicker : aujourd'hui
         p.put("text.month", "Month");
         p.put("text.year", "Year");
+
         UtilDateModel startModel = new UtilDateModel();
         UtilDateModel endModel = new UtilDateModel();
-        startDatePanel = new JDatePanelImpl(startModel, p);
-        endDatePanel = new JDatePanelImpl(endModel, p);
 
-        JLabel periode = new JLabel("Saisir la période pour l'édition du bilan");
+        startDatePicker = new JDatePanelImpl(startModel, p);
+        endDatePicker = new JDatePanelImpl(endModel, p);
 
-        JLabel db = new JLabel("Début de la période :");
-        JPanel jpDebut = new JPanel(new BorderLayout());
-        jpDebut.add(db, BorderLayout.NORTH);
-        jpDebut.add(startDatePanel, BorderLayout.SOUTH);
+        northPanel.add(startDatePicker, BorderLayout.WEST);
+        northPanel.add(endDatePicker, BorderLayout.EAST);
 
-        JLabel df = new JLabel("Fin de la période :");
-        JPanel jpFin = new JPanel(new BorderLayout());
-        jpFin.add(df,BorderLayout.NORTH);
-        jpFin.add(endDatePanel,BorderLayout.SOUTH);
+        dateDebutLabel = new JLabel("Début de la période :");
+        dateFinLabel = new JLabel("Fin de la période :", SwingConstants.RIGHT);
+        JPanel dateLabels = new JPanel(new GridLayout(1, 2));
 
-        bilan = new JButton("Afficher le bilan");
-        JPanel jpButton = new JPanel();
-        jpButton.add(bilan);
+        dateLabels.add(dateDebutLabel);
+        dateLabels.add(dateFinLabel);
+        northPanel.add(dateLabels, BorderLayout.NORTH);
 
-        northPanel.add(periode,BorderLayout.NORTH);
-        JPanel jp = new JPanel(new GridLayout(1,3,50,0));
-        jp.add(jpDebut);
-        jp.add(jpFin);
-        jp.add(jpButton);
-        northPanel.add(jp,BorderLayout.CENTER);
-        this.add(northPanel,BorderLayout.NORTH);
-        this.add(centerPan, BorderLayout.CENTER);
+        bilanButton = new JButton("Afficher le bilan");
+        northPanel.add(bilanButton, BorderLayout.SOUTH);
+
+        add(northPanel, BorderLayout.NORTH);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         System.out.println("BilanPanel::update()");
+        if (o instanceof Bilan){
+            Bilan b = (Bilan)o;
+            System.out.println("Update sur vue, avec " + b.getStart() + " --> " + b.getEnd());
+            ContaintBilanPanel containtBilan = new ContaintBilanPanel(b);
+            centerPanel.add(containtBilan);
+            centerPanel.validate();
+        }else if( o != null){
+            System.out.println("Update called from a " + o.getClass().getSimpleName().toString());
+        }
+
 
     }
 
     public JButton getBilanButton(){
-        return bilan;
+        return bilanButton;
     }
 
-    public JPanel getCenterPan() {
-        return centerPan;
+    public JPanel getCenterPanel() {
+        return centerPanel;
     }
 
-    public JDatePanelImpl getStartDatePanel() {
-        return startDatePanel;
+    public JDatePanelImpl getStartDatePicker() {
+        return startDatePicker;
     }
 
-    public JDatePanelImpl getEndDatePanel() {
-        return endDatePanel;
+    public JDatePanelImpl getEndDatePicker() {
+        return endDatePicker;
     }
 }
