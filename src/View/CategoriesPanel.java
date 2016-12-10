@@ -14,20 +14,24 @@ import java.util.Observer;
 public class CategoriesPanel extends ObserverPanel{
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("CategoriesPanel::update");
         removeAll();
 
-        ArrayList<Category> cats = Category.getCategories();
-        for (Category c : cats){
+        for (Category c : Category.getCategories()){
             try{
                 CategoryView cv = c.getView();
+                cv.getTasksPanel().removeAll();
                 for (Task t : c.getTasks()){
                     if (t.getDoneDate() == null){
                         cv.getTasksPanel().add(t.getView());
                     }
-
                 }
-                add(cv);
+
+
                 cv.revalidate();
+                cv.repaint();
+                add(cv);
+
             }catch(NullPointerException e){
                 System.err.println("CatView not found");
             }

@@ -96,12 +96,13 @@ public class TaskPropertiesController {
             task.update();
             task.findContainer().update();
         }else{ //la tâche n'existait pas encore, on a donc demandé à la créer
+            System.out.println("Création d'une toute nouvelle tâche");
             if (endSourceDate == null){
                 endSourceDate = new Date();
             }
 
             if (startSourceDate == null){
-                startSourceDate = new Date();
+                //startSourceDate = new Date();
             }
             try{
                 if (startSourceDate != null){
