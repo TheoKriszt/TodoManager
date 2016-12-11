@@ -97,25 +97,6 @@ public class Category extends Observable implements Serializable {
 //        notifyObservers();
     }
 
-
-    /**
-     * Retirer une tâche d'une catégorie
-     * @param t tâche à retiré
-     * @deprecated
-     */
-    @Deprecated
-    public void removeTaskFromCategory(Task t){
-        System.out.println("Removing task " + t.getName() + " from cat " + name);
-        if(tasks.contains(t)) {
-            tasks.remove(t);
-            tasks.trimToSize();
-            getAucune().addTask(t);
-
-        }else System.err.println("Task not found in cat");
-        setChanged();
-        notifyObservers();
-    }
-
     /**
      * Renommer une catégorie.
      * Une catégorie ne peut pas être renommer si le nom choisi est celui d'une catégorie déjà existante.
@@ -125,7 +106,7 @@ public class Category extends Observable implements Serializable {
      * @throws UnsupportedOperationException,IllegalArgumentException
      */
     public void renameCategory(String newName) throws UnsupportedOperationException {
-        if (equals(getAucune())){
+        if (this.equals(getAucune())){
             throw new UnsupportedOperationException("Interdiction de renommer la Catégorie \""+getName()+"\"");
         }
         if (Category.findByName(newName) != null){

@@ -1,46 +1,75 @@
 package Model;
 
+import Controller.MainFrameController;
+import View.MainFrame;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class CategoryTest{
 
-    private Category base;
-    private Task t;
+    private static Category base, aucune, perso, travail;
+    private static Task t;
 
 
-    @Before
-    public void setUp(){
-        Category none = new Category("Aucune");
-        Category perso = new Category("Personnel");
-        Category travail = new Category("Travail");
-        ArrayList<Category> cats = new ArrayList<>();
-        cats.add(none);
-        cats.add(perso);
-        cats.add(travail);
-        Category.setCategories(cats);
+    @BeforeClass
+    public static void setUp(){
+        //Initialisation comme dans le main
+        TodoManager tm = new TodoManager(); // L'instance du gestionnaire de TodoList
 
-        t = new Task("move me", Category.getAucune());
-        base = new Category("Base");
+        MainFrameController mainFrameController = new MainFrameController(tm); //La fenêtre de l'appi et son contrôleur
+        MainFrame mainFrame = new MainFrame(mainFrameController);
+
+        //Categories statiques, or le @Before les initialisera à chaque fois, lancant des Exceptions
+        //On veut rester dans un contexte non statique pour l'initialisation (pas de @BeforeClass)
+        // --> le try/catch ne fais lancer les initialisation que pour le premier test
+        try{
+            Category.getAucune();
+        }catch (IndexOutOfBoundsException e){
+            aucune = new Category("Aucune");
+            base = new Category("Base");
+            travail = new Category("Travail");
+            perso = new Category("Personnel");
+            t = new Task("Tâche");
+        }
 
     }
 
-
+    /**
+     * Les catégories sans nom ne sont pas autorisées
+     */
     @Test(expected=IllegalArgumentException.class)
     public void testBuiltWithNoName(){
         Category failure = new Category(""); // lance la IllegalArgumentException attendue
+    }
+
+    /**
+     * Une catégorie ne peut avoir le nom d'une autre
+     */
+    @Test(expected=IllegalArgumentException.class)
+    public void testBuiltWithPreexistingName(){
+        Category first = new Category("unNom");
+        Category failure = new Category("unNom"); // lance la IllegalArgumentException attendue
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testRenameNameAlreadyTaken(){
+        Category first = new Category("unNom");
+        Category failure = new Category("unAutreNom");
+        failure.renameCategory("unNom");
     }
 
 
     @Test
     public void testBuiltWithRightName(){
         assertEquals("Base", base.getName());
-    }
+    } //
 
 
 
@@ -51,42 +80,23 @@ public class CategoryTest{
         base.addTask(new Task("test"));
         Integer newCount = base.getTasks().size();
         assertEquals(oldCount, newCount);
-
     }
 
-
-    @Test
-    public void testCategoryAucune() throws Exception {
-        assertEquals(Category.getAucune(), new Category("Aucune"));
-
-    }
     //Todo : empecher suppression categorie Aucune ou son renommage
+    @Test (expected = UnsupportedOperationException.class)
+    public void removeAucune(){
+        Category.getAucune().removeCategory();
+    }
 
-    //TODO : tenter d'ajouter une catégorie déjà existante : s'attendre à un fail
-    @Test (expected = IllegalArgumentException.class)
-    public void testNonDoublon(){
-        new Category("Aucune"); //La catégorie Aucune existe de base, levera une exception pour duplicat de nom
+    @Test (expected = UnsupportedOperationException.class)
+    public void renameAucune(){
+        Category.getAucune().renameCategory("SomeName");
     }
 
     @Test
     public void testMoveTaskToCategory() throws Exception {
-
         Category.getAucune().moveTaskToCategory(t, base);
         assertEquals(t, base.getTasks().get(0));
-    }
-
-
-    @Test
-    public void testRemoveTaskFromCategory() throws Exception {
-        base.addTask(t); // ajout testé par ailleurs
-        base.removeTaskFromCategory(t);
-        assertFalse(base.getTasks().contains(t));
-    }
-
-    @Ignore
-    @Test
-    public void testArchiveCompletedTask() throws Exception {
-        //Todo : compléter si nécessaire
     }
 
     @Test
@@ -102,32 +112,6 @@ public class CategoryTest{
 
         assertTrue(Category.getAucune().getTasks().contains(t));
     }
-
-
-    @Test
-    public void testEquals() throws Exception {
-        Category doppelganger = new Category("Base");
-        if (base.equals(doppelganger)){
-            assertEquals(base.getName(), doppelganger.getName());
-        }
-    }
-
-
-    @Ignore
-    @Test
-    public void testGetCategories() throws Exception {
-        Category none = new Category("Aucune");
-        ArrayList<Category> cats = Category.getCategories();
-
-    }
-
-    @Test
-    public void testSetCategories() throws Exception {
-        Category.setCategories(new ArrayList<>());
-        assertTrue(Category.getCategories().isEmpty());
-
-    }
-
 
     @Test
     public void testGetTasks() throws Exception {

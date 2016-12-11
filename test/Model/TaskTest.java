@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.MainFrameController;
+import View.MainFrame;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +14,9 @@ import static org.junit.Assert.*;
 
 public class TaskTest{
 
-    private Task endsToday;
+    private Category aucune, base, travail, perso;
+
+    private Task endsToday, t;
     private Task endsTomorrow;
     private Task endedYesterday;
     private Task aMonthAgo;
@@ -20,15 +24,28 @@ public class TaskTest{
 
     @Before
         public void setUp() throws Exception {
+//Initialisation comme dans le main
+        TodoManager tm = new TodoManager(); // L'instance du gestionnaire de TodoList
 
-        Category none = new Category("Aucune");
-        Category perso = new Category("Personnel");
-        Category travail = new Category("Travail");
-        ArrayList<Category> cats = new ArrayList<>();
-        cats.add(none);
-        cats.add(perso);
-        cats.add(travail);
-        Category.setCategories(cats);
+        MainFrameController mainFrameController = new MainFrameController(tm); //La fenêtre de l'appi et son contrôleur
+        MainFrame mainFrame = new MainFrame(mainFrameController);
+
+        //Categories statiques, or le @Before les initialisera à chaque fois, lancant des Exceptions
+        //On veut rester dans un contexte non statique pour l'initialisation (pas de @BeforeClass)
+        // --> le try/catch ne fais lancer les initialisation que pour le premier test
+        try{
+            Category.getAucune();
+        }catch (IndexOutOfBoundsException e){
+            aucune = new Category("Aucune");
+            base = new Category("Base");
+            travail = new Category("Travail");
+            perso = new Category("Personnel");
+
+        }
+
+        Category.getAucune().getTasks().clear();
+
+        t = new Task("Tâche");
 
         endsToday = new Task("today");
         endsTomorrow = new Task("tomorrow");
@@ -42,11 +59,18 @@ public class TaskTest{
         endedYesterday.echeance = (LocalDate.now().minusDays(1));
         aMonthAgo.echeance = (LocalDate.now().minusMonths(1));
         inAMonth.echeance = (LocalDate.now().plusMonths(1));
+
+
     }
 
     @Test (expected=IllegalArgumentException.class)
     public void testNomNonvide(){
         Task nomVide = new Task(""); //argument chaîne vide interdit
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void testNomDejaPris(){
+        Task nomDejaPris = new Task("today");
     }
 
     @Test
@@ -64,7 +88,7 @@ public class TaskTest{
 
     @Test (expected = IllegalArgumentException.class)
     public void testSetEcheanceTropTot() throws Exception {
-        endsTomorrow.setEcheance(LocalDate.now());
+        endsTomorrow.setEcheance(LocalDate.now().minusDays(2));
     }
 
     @Test
@@ -74,8 +98,24 @@ public class TaskTest{
 
     @Test
     public void testSetProgress() throws Exception {
-        endsToday.setProgress(0);
-        assertThat(endsToday.getProgress(), is(0));
+        inAMonth.setProgress(10);
+        assertThat(inAMonth.getProgress(), is(10));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testSetProgressNegative() throws Exception {
+        inAMonth.setProgress(-1);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testSetProgressTooHigh() throws Exception {
+        inAMonth.setProgress(999);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testSetProgressWithRegression() throws Exception {
+        inAMonth.setProgress(24);
+        inAMonth.setProgress(2);
     }
 
     @Test
@@ -98,19 +138,6 @@ public class TaskTest{
         assertFalse(inAMonth.isLate());
     }
 
-    @Test
-    public void testEquals() throws Exception {
-        Task a = new Task(" ");
-        Task b = new Task(" ");
-        assertEquals(a, b);
-    }
-
-    @Test
-    public void testDifferents() throws Exception {
-        Task a = new Task(" ");
-        Task b = new LongTask(" ");
-        assertNotEquals(a, b);
-    }
 
     @Test
     public void testSortByDueDate() throws Exception {

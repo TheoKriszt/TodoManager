@@ -60,6 +60,9 @@ public class LongTask extends Task {
         if (startDate.isAfter(echeance)){
             throw new IllegalArgumentException("La date de début ne peut être antérieure à l'échéance");
         }
+        if (startDate.isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("La tâche ne peut pas être prévue avant aujourd'hui");
+        }
         this.startDate = startDate;
     }
 

@@ -109,7 +109,9 @@ public class Task extends Observable implements Serializable {
      */
     public void setEcheance(LocalDate ld) throws IllegalArgumentException{
         if (ld.isBefore(LocalDate.now(DateTimeZone.UTC))){
+
             throw new IllegalArgumentException("Une tâche ne peut être repoussée que dans le futur");
+
         }
         echeance = ld;
     }
@@ -392,7 +394,7 @@ public class Task extends Observable implements Serializable {
         if (diff > 0){
             ret = diff + " jours restants";
         }else if (diff < 0){
-            ret = "dûe depuis " + diff + " jours";
+            ret = "dûe depuis " + -diff + " jours";
         }else{
             ret = "dûe aujourd'hui";
         }
