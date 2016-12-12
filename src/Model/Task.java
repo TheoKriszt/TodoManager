@@ -2,7 +2,6 @@ package Model;
 
 import View.TaskView;
 
-import java.awt.*;
 import java.io.Serializable;
 import org.joda.time.*;
 import java.util.ArrayList;
@@ -131,7 +130,6 @@ public class Task extends Observable implements Serializable {
 
         if (progress > 100 || progress < 0){
             throw new IllegalArgumentException("L'avancement doit être compris entre 0 et 100");
-            //Todo : ajouter tests ad hoc
         }
         if (this.progress > progress){
             throw new IllegalArgumentException("L'avancement ne peut évoluer que de façon croissante");
@@ -345,24 +343,38 @@ public class Task extends Observable implements Serializable {
     public static ArrayList<Task> findTop8Tasks(ArrayList<Task> tasks) {
         ArrayList<Task> top = new ArrayList<>();
 
-
-        Task.sortByIntermediateDueDate(tasks);
-        if (!tasks.isEmpty()){
-            top.add(tasks.remove(0));
-            tasks.trimToSize();
-        }
-
-
-        ArrayList<Task> longues = new ArrayList<>(),
-                        courtes = new ArrayList<>();
+        ArrayList<Task> longues = new ArrayList<>();
+        ArrayList<Task> courtes = new ArrayList<>();
 
         for (Task t : tasks){
-            if (t instanceof LongTask) longues.add(t);
+            if (t instanceof LongTask) longues.add((LongTask) t);
             else courtes.add(t);
+        }
+
+        longues.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                LongTask t1 = (LongTask)o1;
+                LongTask t2 = (LongTask)o2;
+
+                if (t1.getDuration() == t2.getDuration())
+                    return 0;
+
+                return (t1.getDuration() > t2.getDuration()) ? 1 : -1;
+            }
+        });
+
+        if (!longues.isEmpty()){
+            top.add(longues.remove(0));
+            longues.trimToSize();
         }
 
         Task.sortByIntermediateDueDate(courtes);
         Task.sortByIntermediateDueDate(longues);
+
+
+
+
 
         for (int i=0; i<3; i++){
             if (!longues.isEmpty()){

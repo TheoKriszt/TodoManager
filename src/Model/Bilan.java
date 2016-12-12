@@ -34,6 +34,7 @@ public class Bilan extends Observable{
      *      - toujours pas finies... et en retard !
      */
     private void loadTasks(){
+        tasksNotReleasedAndLate = tasksReleasedLate = tasksReleasedInTime = 0f;
         ArrayList<Category> categories = Category.getCategories();
         tasks = new ArrayList<Task>();
         for (Category c : categories){

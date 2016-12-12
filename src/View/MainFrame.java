@@ -28,8 +28,9 @@ public class MainFrame extends JFrame implements Observer {
 
     public MainFrame(MainFrameController mfc){
         super("Todo List Manager");
-        setLocationRelativeTo(null);
-        setSize(new Dimension(900, 600));
+
+        setMinimumSize(new Dimension(950, 600));
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         buildMenu();
         buildTabs();

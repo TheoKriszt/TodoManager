@@ -71,7 +71,7 @@ public class TaskPropertiesDialogPanel extends JFrame{
      * Constructeur de TaskPropertiesDialogPanel
      */
     public TaskPropertiesDialogPanel(){
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
 
         yesButton = new JButton("Confirmer");
         noButton = new JButton("Annuler");
